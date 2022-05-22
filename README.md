@@ -15,7 +15,7 @@
 4. install npm requirements
 	
 	`cd frontend`
-	
+
 	`npm install`
 	
 	`cd ..`
