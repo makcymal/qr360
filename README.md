@@ -15,7 +15,9 @@
 4. install npm requirements
 	
 	`cd frontend`
+	
 	`npm install`
+	
 	`cd ..`
 
 5. run backend at localhost:8000
