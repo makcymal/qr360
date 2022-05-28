@@ -1,29 +1,17 @@
 # qr
 ## setup:
-1. create vurtual environment
-
-	`python -m venv venv`
-	
-2. acivate venv
-
-	`.\venv\Scripts\activate`
-	
-3. install python requirements
+1. install python requirements
 
 	`pip install -r requirements.txt`
 	
-4. install npm requirements
-	
-	`cd frontend`
+2. install npm requirements
 
 	`npm install`
-	
-	`cd ..`
 
-5. run backend at localhost:8000
+3. run backend at localhost:8000
 
 	`python backend/manage.py runserver`
 
-6. run frontend at localhost:8080
+4. run frontend at localhost:8080
 
-	`npm run --prefix frontend serve`
+	`npm run serve`
