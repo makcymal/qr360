@@ -1,82 +1,88 @@
 <template>
-  <div>
-    <router-view></router-view>
-  </div>
+    <div>
+        <router-view></router-view>
+    </div>
 </template>
 
 <script>
-export default {};
+import store from "@/store";
+
+export default {
+    created() {
+        console.log(store.state.username);
+    },
+};
 </script>
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Rubik&display=swap");
 
 body {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 button {
-  border: 0;
+    border: 0;
 }
 
 a {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 .blue-bg {
-  background-color: #2ccac3;
+    background-color: #2ccac3;
 }
 .dgry-bg {
-  background-color: #282b32;
+    background-color: #282b32;
 }
 .lgry-bg {
-  background-color: #dfe4ea;
+    background-color: #dfe4ea;
 }
 .orng-bg {
-  background-color: #fc5819;
+    background-color: #fc5819;
 }
 .whit-bg {
-  background-color: #fefefe;
+    background-color: #fefefe;
 }
 .whit-fn {
-  color: #fefefe;
+    color: #fefefe;
 }
 
 .bg {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .text {
-  font-family: "Rubik", sans-serif;
-  margin: 0;
-  letter-spacing: 0.05em;
-  padding: 0 max(1.5em, 1vw);
-  text-align: center;
+    font-family: "Rubik", sans-serif;
+    margin: 0;
+    letter-spacing: 0.05em;
+    padding: 0 max(1.5em, 1vw);
+    text-align: center;
 }
 
 .lrg {
-  font-size: min(3em, 8vh, 4vw);
+    font-size: min(3em, 8vh, 4vw);
 }
 
 .mdm {
-  font-size: min(1.8em, 5vh, 2.5vw);
+    font-size: min(1.8em, 5vh, 2.5vw);
 }
 
 .sml {
-  font-size: min(1.4em, 4vh, 1.8vw);
+    font-size: min(1.4em, 4vh, 1.8vw);
 }
 
 .xs {
-  font-size: min(1.1em, 2.5vh, 1.5vw);
+    font-size: min(1.1em, 2.5vh, 1.5vw);
 }
 
 .invisible {
-  opacity: 0;
+    opacity: 0;
 }
 </style>
