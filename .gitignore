@@ -1,14 +1,16 @@
 __pycache__
+migrations
+*.sqlite3
 
 .DS_Store
 node_modules
 /dist
 
-
 # local env files
 /venv
 .env.local
 .env.*.local
+.env
 
 # Log files
 npm-debug.log*
