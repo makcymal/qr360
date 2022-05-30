@@ -45,9 +45,6 @@ a {
 .whit-bg {
     background-color: #fefefe;
 }
-.whit-fn {
-    color: #fefefe;
-}
 
 .bg {
     width: 100%;
@@ -61,8 +58,8 @@ a {
 .text {
     font-family: "Rubik", sans-serif;
     margin: 0;
-    letter-spacing: 0.05em;
-    padding: 0 max(1.5em, 1vw);
+    padding: 0;
+    letter-spacing: 0.03em;
     text-align: center;
 }
 
