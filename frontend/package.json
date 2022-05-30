@@ -8,6 +8,10 @@
   },
   "dependencies": {
     "core-js": "^3.8.3",
+    "npm": "^8.11.0",
+    "run": "^1.4.0",
+    "serve": "^13.0.2",
+    "undefined": "^0.1.0",
     "vue": "^3.2.13",
     "vue-class-component": "^8.0.0-0",
     "vue-router": "^4.0.3"
