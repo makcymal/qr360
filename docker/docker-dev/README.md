@@ -5,11 +5,11 @@
 
 2. create .env file, example:
 
-    ` DEBUG=1 `
-
-    ` SECRET_KEY=dev `
-
-    ` DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 0.0.0.0 [::1] `
+    ```
+    DEBUG=1
+    SECRET_KEY=dev
+    DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 0.0.0.0 [::1]
+    ```
 
 3. build docker
 

@@ -1,68 +1,30 @@
 <template>
-	<div>
-  	<router-view></router-view>
-	</div>
+  <nav>
+    <router-link to="/">Home</router-link> |
+    <router-link to="/about">About</router-link>
+  </nav>
+  <router-view />
 </template>
 
-
-<script>
-export default {
-
-}
-</script>
-
-
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
-
-body {
-	margin: 0;
-	padding: 0;
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
 }
 
-button {
-	border: 0;
+nav {
+  padding: 30px;
 }
 
-a {
-	text-decoration: none;
+nav a {
+  font-weight: bold;
+  color: #2c3e50;
 }
 
-.bg {
-	width: 100%;
-	height: 100vh;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+nav a.router-link-exact-active {
+  color: #42b983;
 }
-
-.text {
-	font-family: 'Rubik', sans-serif;
-	margin: 0;
-	letter-spacing: 0.05em;
-	padding: 0 max(1.5em, 1vw);
-	text-align: center;
-}
-
-.lrg {
-	font-size: min(3em, 8vh, 4vw);
-}
-
-.mdm {
-	font-size: min(1.8em, 5vh, 2.5vw);
-}
-
-.sml {
-	font-size: min(1.4em, 4vh, 1.8vw);
-}
-
-.xs {
-	font-size: min(1.1em, 2.5vh, 1.5vw);
-}
-
-.invisible {
-	opacity: 0;
-}
-
 </style>

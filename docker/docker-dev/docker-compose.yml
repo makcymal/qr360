@@ -27,5 +27,4 @@ services:
     depends_on:
       - django
     command:
-      npm run serve
-
+      yarn serve
