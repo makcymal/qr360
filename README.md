@@ -1,17 +1,12 @@
 # qr
 ## setup:
-1. install python requirements
 
-	`pip install -r requirements.txt`
-	
-2. install npm requirements
+1. go to the frontend folder
 
-	`npm install`
+    ` cd frontend `
 
-3. run backend at localhost:8000
+2. install
 
-	`python backend/manage.py runserver`
+    ` yarn `
 
-4. run frontend at localhost:8080
-
-	`npm run serve`
+3. go to the docker folder and pick dev or prod docker containers

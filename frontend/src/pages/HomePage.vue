@@ -1,165 +1,156 @@
-<template>
-    <div class="bg top whit-bg"></div>
-    <div class="bg bot lgry-bg"></div>
+<template lang="html">
+  <div class="bg">
+    <div class="container-xl">
+      <div class="row">
+        <div class="col-md-7 wrapper">
+          <div class="main-text">
+            <h1 class="title xl-font">QR360</h1>
+            <h2 class="desc md-font">Динамические QR коды с собой и навынос</h2>
+            <div class="auth">здесь будет кнопка</div>
+          </div>
+        </div>
 
-    <div class="cols-wrapper">
-        <div class="col">
-            <div class="cont big blue-bg">
-                <h2 class="text sml whit-fn">
-                    Меняйте
-                    <br />содержимое <br />QR кода, <br />даже если уже
-                    <br />отправили <br />его <br />всем <br />друзьям
-                </h2>
+        <div class="col-md-5 wrapper">
+          <div class="qr-widget">
+            <div
+              @mouseover="explanationVisible = true"
+              @mouseleave="explanationVisible = false"
+              class="widget-title-wrapper"
+            >
+              <h3 class="widget-title sm-font">
+                Посмотрите, как это работает:
+              </h3>
+              <p v-if="explanationVisible" class="explanation xs-font">
+                Созданный у нас QR будет вести на промежуточную страницу,
+                которая перенаправит пользователя туда, куда укажете Вы!
+              </p>
             </div>
-            <div class="cont sml">
-                <img src="@/img/qr.svg" class="qr" />
+            <div class="input-wrapper">
+              <text-input v-model="qrQuery"></text-input>
             </div>
+            <img src="@/assets/qr-code.gif" class="qrcode" />
+          </div>
         </div>
-        <div class="col center">
-            <div class="cont big dgry-bg">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="#DFE4EA"
-                    class="alt"
-                    viewBox="0 0 16 16"
-                >
-                    <path
-                        d="M1 13.5a.5.5 0 0 0 .5.5h3.797a.5.5 0 0 0 .439-.26L11 3h3.5a.5.5 0 0 0 0-1h-3.797a.5.5 0 0 0-.439.26L5 13H1.5a.5.5 0 0 0-.5.5zm10 0a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 0-1h-3a.5.5 0 0 0-.5.5z"
-                    />
-                </svg>
-                <h1 class="text lrg whit-fn">QR360</h1>
-            </div>
-        </div>
-        <div class="col">
-            <!-- если пользователь авторизован -->
-            <div v-if="$store.state.username == ''" class="cont sml btm">
-                <router-link to="/auth" class="btn text sml dgry-bg whit-fn">
-                    Авторизация
-                </router-link>
-            </div>
-            <div v-else class="cont sml btm">
-                <router-link to="/auth" class="btn text sml dgry-bg whit-fn">
-                    Кнопка
-                </router-link>
-            </div>
-            <div class="cont big orng-bg">
-                <h3 class="text mdm whit-fn">Как?</h3>
-                <h3 class="text xs pad-top whit-fn">
-                    Созданный у нас QR будет вести на промежуточную страницу,
-                    которая направит Вашего клиента туда, куда укажете Вы
-                </h3>
-            </div>
-        </div>
+      </div>
     </div>
+  </div>
 </template>
 
-<script>
-export default {};
+<script lang="ts">
+export default {
+  data() {
+    return {
+      explanationVisible: false,
+      qrQuery: "",
+    };
+  },
+};
 </script>
 
-<style scoped>
+<style lang="css" scoped>
 .bg {
-    position: absolute;
-    width: 100%;
-    left: 0;
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: #f1f1f1;
+  background-image: url("@/assets/bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
-.bg.top {
-    height: 30vh;
-    top: 0;
+.wrapper {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.bg.bot {
-    height: 70vh;
-    bottom: 0;
+.main-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.cols-wrapper {
-    position: absolute;
-    width: 80%;
-    height: 80vh;
-    top: 10%;
-    left: 10%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
+.title {
+  font-weight: 700;
+  text-align: center;
 }
 
-.col {
-    width: 25%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    user-select: none;
+.desc {
+  text-align: center;
 }
 
-.col.center {
-    justify-content: center;
+.auth {
+  margin: auto;
+  user-select: none;
 }
 
-.cont {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.qr-widget {
+  width: 80%;
+  height: 70%;
+  padding: 1.5em;
+  background-color: white;
+  border-radius: 2.5em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.cont.big {
-    height: 65%;
+.widget-title-wrapper {
+  position: relative;
+  padding-bottom: 0.1em;
+  margin-bottom: 2em;
 }
 
-.cont.sml {
-    height: 25%;
+.widget-title {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  user-select: none;
+  text-decoration: underline;
+  transition: all 0.2s ease;
 }
 
-.qr {
-    height: 100%;
+.widget-title:hover {
+  color: dimgray;
 }
 
-.alt {
-    width: 40%;
+.explanation {
+  user-select: none;
+  background-color: rgb(220, 220, 220);
+  position: absolute;
+  width: 90%;
+  top: calc(100% + 10px);
+  left: 5%;
+  z-index: 10;
+  margin: 0;
+  padding: 0.7em;
+  text-align: center;
+  border-radius: 1em;
 }
 
-.text {
-    font-family: "Rubik", sans-serif;
-    margin: 0;
-    letter-spacing: 0.05em;
-    padding: 0 max(1.5em, 1vw);
-    text-align: center;
+.explanation:before {
+  content: "";
+  border-style: solid;
+  border-width: 0 8px 12px 8px;
+  border-color: transparent transparent rgb(220, 220, 220) transparent;
+  position: absolute;
+  bottom: 100%;
+  left: calc(50% - 12px);
 }
 
-.lrg {
-    font-size: min(3.5em, 9vh, 5vw);
+.input-wrapper {
+  width: 90%;
+  height: 3em;
 }
 
-.mdm {
-    font-size: min(1.8em, 5vh, 2.5vw);
-}
-
-.sml {
-    font-size: min(1.4em, 4vh, 1.8vw);
-}
-
-.xs {
-    font-size: min(1.1em, 2.5vh, 1.5vw);
-}
-
-.pad-top {
-    padding-top: min(1em, 1vh);
-}
-
-.btn {
-    font-weight: 600;
-    letter-spacing: 0;
-    padding: max(0.7em, 0.5vh, 0.2vw) max(1em, 0.8vh, 0.5vw);
-    border: 0;
-    border-radius: 5px;
-    transition: all 0.3s ease-out;
-}
-
-.btn:hover {
-    background-color: #fc5819;
+.qrcode {
+  user-select: none;
+  width: 65%;
+  padding-top: 0.5em;
 }
 </style>

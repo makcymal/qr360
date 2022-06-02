@@ -1,85 +1,50 @@
-<template>
-    <div>
-        <router-view></router-view>
-    </div>
+<template lang="html">
+  <router-view></router-view>
 </template>
 
-<script>
-import store from "@/store";
-
-export default {
-    created() {
-        console.log(store.state.username);
-    },
-};
+<script lang="ts">
+export default {};
 </script>
 
-<style>
-@import url("https://fonts.googleapis.com/css2?family=Rubik&display=swap");
+<style lang="css">
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@500&family=Source+Code+Pro&display=swap");
 
 body {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 button {
-    border: 0;
+  border: 0;
 }
 
-a {
-    text-decoration: none;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a,
+button {
+  padding: 0;
+  text-decoration: none;
+  font-family: "Quicksand", sans-serif;
 }
 
-.blue-bg {
-    background-color: #2ccac3;
+.xl-font {
+  font-size: min(5em, 17vw);
 }
-.dgry-bg {
-    background-color: #282b32;
+.lg-font {
+  font-size: min(4em, 13vw);
 }
-.lgry-bg {
-    background-color: #dfe4ea;
+.md-font {
+  font-size: min(2em, 8vw);
 }
-.orng-bg {
-    background-color: #fc5819;
+.sm-font {
+  font-size: min(1.5em, 4.5vw);
 }
-.whit-bg {
-    background-color: #fefefe;
-}
-
-.bg {
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.text {
-    font-family: "Rubik", sans-serif;
-    margin: 0;
-    padding: 0;
-    letter-spacing: 0.03em;
-    text-align: center;
-}
-
-.lrg {
-    font-size: min(3em, 8vh, 4vw);
-}
-
-.mdm {
-    font-size: min(1.8em, 5vh, 2.5vw);
-}
-
-.sml {
-    font-size: min(1.4em, 4vh, 1.8vw);
-}
-
-.xs {
-    font-size: min(1.1em, 2.5vh, 1.5vw);
-}
-
-.invisible {
-    opacity: 0;
+.xs-font {
+  font-size: min(1em, 3vw);
 }
 </style>

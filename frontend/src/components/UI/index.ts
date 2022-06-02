@@ -1,3 +1,3 @@
-import Button from "@/components/UI/Button.vue";
+import TextInput from "@/components/UI/TextInput.vue";
 
-export default [Button];
+export default [TextInput];
