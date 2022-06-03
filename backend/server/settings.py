@@ -22,16 +22,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = 'django-insecure-==&6+8raq3tp&b2f1dyq!$%3auym%hj8#0j*f$%udrrvfv1s61'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = int(os.environ.get('DEBUG', default=0))
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
-if os.environ.get('DJANGO_ALLOWED_HOSTS') is not None:
-    ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS').split(' ')
-
+# if os.environ.get('DJANGO_ALLOWED_HOSTS') is not None:
+#     ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS').split(' ')
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -44,8 +43,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     'rest_framework',
-    'rest_framework.authtoken',
-    'djoser',
     'corsheaders',
     'qr.apps.QrConfig',
 ]
@@ -97,19 +94,18 @@ DATABASES = {
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    # enable when catching status 400 is ready
-    # {
-    #     'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    # },
-    # {
-    #     'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    # },
-    # {
-    #     'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    # },
-    # {
-    #     'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    # },
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
 ]
 
 
@@ -142,23 +138,19 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
         # disable in prod
         'rest_framework.renderers.BrowsableAPIRenderer',
-    ],
-
-    # access to API
-    'DEFAULT_PERMISSION_CLASSES': [
-        # enable in prod or rewrite it to each APIView
-        # 'rest_framework.permissions.IsAuthenticated',
-    ],
-
-    # auth ways
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-    ],
+    ]
 }
 
 
 # access to API from different source
 CORS_ALLOWED_ORIGINS = [
     # vue dev server
+    'http://localhost:3000',
+    'http://localhost:8000',
     'http://localhost:8080',
+    'http://kchaw.ru',
 ]
+
+
+# telegram bot secret key for auth
+TGBOT = '5195521399:AAHCKGLCVmrQ19xQ5g6hSL5SqPQfXQvSbpg'

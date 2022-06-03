@@ -6,7 +6,13 @@
           <div class="main-text">
             <h1 class="title xl-font">QR360</h1>
             <h2 class="desc md-font">Динамические QR коды с собой и навынос</h2>
-            <div class="auth">здесь будет кнопка</div>
+            <div class="auth">
+              <auth-button
+                mode="callback"
+                telegram-login="QR360_bot"
+                @callback="onAuth"
+              />
+            </div>
           </div>
         </div>
 
@@ -37,12 +43,22 @@
 </template>
 
 <script lang="ts">
+import router from "@/router";
+import store from "@/store";
+
 export default {
   data() {
     return {
       explanationVisible: false,
       qrQuery: "",
     };
+  },
+
+  methods: {
+    onAuth(user: any) {
+      store.dispatch("onAuth", user);
+      router.push("/qrs");
+    },
   },
 };
 </script>

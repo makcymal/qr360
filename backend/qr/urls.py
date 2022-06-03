@@ -1,9 +1,9 @@
-from django.urls import path, include, re_path
+from django.urls import path, include
 
-from .views import *
+from .views import StartSession, ManageQrs
 
 
 urlpatterns = [
-	path('auth/', include ('djoser.urls')),
-	re_path(r'^auth/', include ('djoser.urls.authtoken')),
+    path('api/s', StartSession.as_view()),
+    path('api/qrs', ManageQrs.as_view()),
 ]
