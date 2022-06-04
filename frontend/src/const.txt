@@ -1,2 +1,4 @@
 F1F1F1 - light gray
+rgb(220, 220, 220) - middle gray
 FFC239 - yellow
+54A9EB - telegram blue

@@ -32,7 +32,7 @@
               </p>
             </div>
             <div class="input-wrapper">
-              <text-input v-model="qrQuery"></text-input>
+              <mega-input v-model="qrQuery"></mega-input>
             </div>
             <img src="@/assets/qr-code.gif" class="qrcode" />
           </div>

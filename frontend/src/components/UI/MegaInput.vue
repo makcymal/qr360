@@ -16,7 +16,7 @@
 
 <script lang="ts">
 export default {
-  name: "text-input",
+  name: "mega-input",
 
   props: {
     modelValue: {
