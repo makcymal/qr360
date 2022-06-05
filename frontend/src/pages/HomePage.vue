@@ -32,7 +32,12 @@
               </p>
             </div>
             <div class="input-wrapper">
-              <mega-input v-model="qrQuery"></mega-input>
+              <easy-input
+                v-model="qrQuery"
+                :icon_name="'link'"
+                :btn_name="'thunder'"
+                @clicked="updateQr"
+              ></easy-input>
             </div>
             <img src="@/assets/qr-code.gif" class="qrcode" />
           </div>
@@ -43,10 +48,11 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from "vue";
 import router from "@/router";
 import store from "@/store";
 
-export default {
+export default defineComponent({
   data() {
     return {
       explanationVisible: false,
@@ -59,8 +65,12 @@ export default {
       store.dispatch("onAuth", user);
       router.push("/qrs");
     },
+
+    updateQr() {
+      console.log("aboba");
+    },
   },
-};
+});
 </script>
 
 <style lang="css" scoped>
@@ -160,7 +170,7 @@ export default {
 }
 
 .input-wrapper {
-  width: 90%;
+  width: 100%;
   height: 3em;
 }
 

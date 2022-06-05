@@ -3,14 +3,15 @@
     @click="$emit('clicked')"
     @mouseover="explanationVisible = true"
     @mouseleave="explanationVisible = false"
-    class="filler"
+    class="wrapper"
   >
-    <div v-for="icon in icons" :key="icon.name" class="filler">
-      <div v-if="icon_name == icon.name" class="filler wrapper">
-        <img :src="icon.src" class="icon" />
-      </div>
+    <div class="icon-wrapper">
+      <easy-icon :icon_name="icon_name"></easy-icon>
     </div>
-    <div v-if="explanationVisible" class="explanation-wrapper">
+    <div
+      v-if="explanationVisible && description != ''"
+      class="explanation-wrapper"
+    >
       <p class="explanation">
         {{ description }}
       </p>
@@ -19,26 +20,38 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "mega-button",
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  name: "easy-button",
 
   data() {
     return {
       explanationVisible: false,
-      icons: [{ name: "link", src: require("@/assets/link.svg") }],
+      icons: [
+        { name: "calendar", src: require("@/assets/icons/calendar.svg") },
+        { name: "copy", src: require("@/assets/icons/copy.svg") },
+        { name: "download", src: require("@/assets/icons/download.svg") },
+        { name: "empty_name", src: require("@/assets/icons/empty_name.svg") },
+        { name: "link", src: require("@/assets/icons/link.svg") },
+        { name: "setted_name", src: require("@/assets/icons/setted_name.svg") },
+        { name: "stat", src: require("@/assets/icons/stat.svg") },
+        { name: "thunder", src: require("@/assets/icons/thunder.svg") },
+      ],
     };
   },
 
   props: {
     icon_name: {
       type: String,
+      default: "thunder",
     },
     description: {
       type: String,
-      default: "Отправить",
+      default: "",
     },
   },
-};
+});
 </script>
 
 <style lang="css" scoped>
@@ -51,27 +64,26 @@ p {
   line-height: min(1.1em, 2.5vw);
 }
 
-.filler {
+.wrapper {
   position: relative;
+  user-select: none;
   width: 100%;
   height: 100%;
 }
 
-.wrapper {
+.icon-wrapper {
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: rgb(220, 220, 220);
-  border-radius: 1em;
+  border-radius: 0.5em;
   transition: all 0.3s ease-in-out;
 }
 
-.wrapper:hover {
+.icon-wrapper:hover {
   background-color: #ffc239;
-}
-
-.icon {
-  min-height: 85%;
 }
 
 .explanation-wrapper {
