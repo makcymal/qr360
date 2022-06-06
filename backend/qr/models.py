@@ -9,9 +9,9 @@ class Session(models.Model):
 class QrCode(models.Model):
     # telegram id
     user_id = models.IntegerField(default=0)
+    # название, опционально
+    name = models.CharField(max_length=50, blank=True, default='')
     # куда надо редиректить, при сканировании qr
-    redirect_url = models.TextField(max_length=8192)
-    # ссылка, которая шифруется в qr
-    const_url = models.CharField(max_length=255)
+    url = models.TextField(max_length=8192)
     # количество переходов по qr
     entries = models.IntegerField(default=0)

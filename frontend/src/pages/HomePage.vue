@@ -34,6 +34,7 @@
             <div class="input-wrapper">
               <easy-input
                 v-model="qrQuery"
+                :placeholder="'dvfu.ru'"
                 :icon_name="'link'"
                 :btn_name="'thunder'"
                 @clicked="updateQr"

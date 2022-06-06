@@ -9,7 +9,7 @@
         spellcheck="false"
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
-        placeholder="https://www.dvfu.ru/"
+        :placeholder="placeholder"
       />
       <div class="clear-wrapper">
         <p @click="$emit('update:modelValue', '')" class="clear-btn">×</p>
@@ -33,6 +33,10 @@ export default defineComponent({
   props: {
     modelValue: {
       type: String,
+    },
+    placeholder: {
+      type: String,
+      default: "",
     },
     icon_name: {
       type: String,

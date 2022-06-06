@@ -4,6 +4,7 @@ import hashlib
 import string
 import random
 
+from django.http import HttpResponse, HttpResponseRedirect
 from django.conf import settings
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -41,10 +42,83 @@ class StartSession(APIView):
 
 class ManageQrs(APIView):
     def get(self, request):
-        sess_hash = request.query_params['hash']
         try:
+            sess_hash = request.query_params['hash']
             user_id = Session.objects.get(sess_hash=sess_hash).user_id
             qrs = QrCode.objects.filter(user_id=user_id)
             return Response({'qrs': QrSerializer(qrs, many=True).data})
         except:
             return Response({})
+
+
+    def post(self, request):
+        try:
+            sess_hash = request.query_params['hash']
+            user_id = Session.objects.get(sess_hash=sess_hash).user_id
+            url = request.query_params['url']
+        except:
+            return Response({'success': False})
+
+        qr = QrCode(user_id=user_id, url=url, entries=0)
+
+        try:
+            name = request.query_params['name']
+            qr.name = name
+        except:
+            pass
+
+        qr.save()
+        return Response({'success': True})
+
+
+    def put(self, request):
+        try:
+            sess_hash = request.query_params['hash']
+            id = request.query_params['id']
+            qr = QrCode.objects.get(pk=id)
+            session = Session.objects.get(sess_hash=sess_hash)
+        except:
+            return Response({'success': False})
+
+        if (qr.user_id != session.user_id):
+            return Response({'success': False})
+
+        for field in request.query_params:
+            if field != 'hash' and field != 'id':
+                setattr(qr, field, request.query_params[field])
+        qr.save()
+        
+        return Response({'success': True})
+
+
+    def delete(self, request):
+        try:
+            sess_hash = request.query_params['hash']
+            id = request.query_params['id']
+            qr = QrCode.objects.get(pk=id)
+            session = Session.objects.get(sess_hash=sess_hash)
+        except:
+            return Response({'success': False})
+
+        if (qr.user_id != session.user_id):
+            return Response({'success': False})
+
+        try:
+            qr.delete()
+            return Response({'success': True})
+        except:
+            return Response({'success': False})
+
+
+def Redirect(request, id):
+    try:
+        qr = QrCode.objects.get(pk=id)
+        qr.entries += 1
+        qr.save()
+        return HttpResponseRedirect('http://' + qr.url)
+    except:
+        return HttpResponse('Sorry, an error occuried')
+
+
+def AppView(request, vue=None):
+    return HttpResponse('aboba')
