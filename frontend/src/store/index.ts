@@ -7,7 +7,7 @@ export default createStore({
     isAuth: false,
     sessionHash: "",
     user: Object,
-    api: "http://kchaw.ru/api/",
+    api: "http://localhost:8000/api/",
     qrs: [Object],
   },
   getters: {},
@@ -27,17 +27,34 @@ export default createStore({
           console.log(response.data.hash);
           state.sessionHash = response.data.hash;
 
-          // работает
-          axios
-            .get(state.api + `qrs?hash=${state.sessionHash}`)
-            .then(function (response) {
-              console.log(response.data);
-              state.qrs = response.data.qrs;
-              console.log(state.qrs);
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
+          dispatch("getQrs");
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+
+    getQrs({ state }) {
+      // работает
+      axios
+        .get(state.api + `qr?hash=${state.sessionHash}`)
+        .then(function (response) {
+          console.log(response.data);
+          state.qrs = response.data.qrs;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+
+    // qr = { hash: "", url: "", name: "" (optional) }
+    createQr({ state, dispatch }, qr) {
+      console.log(qr);
+      axios
+        .post(state.api + "qr", qr)
+        .then(function (response) {
+          console.log(response.data);
+          // dispatch("getQrs");
         })
         .catch(function (error) {
           console.log(error);

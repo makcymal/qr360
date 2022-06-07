@@ -28,6 +28,7 @@ def check_string(data):
 
 class StartSession(APIView):
     def post(self, request):
+        print(request.query_params)
         if check_string(request.data):
             user_id = request.data['id']
             old_sessions = Session.objects.filter(user_id=user_id)
@@ -42,6 +43,7 @@ class StartSession(APIView):
 
 class ManageQrs(APIView):
     def get(self, request):
+        print(request.query_params)
         try:
             sess_hash = request.query_params['hash']
             user_id = Session.objects.get(sess_hash=sess_hash).user_id
@@ -52,6 +54,7 @@ class ManageQrs(APIView):
 
 
     def post(self, request):
+        print(request.query_params)
         try:
             sess_hash = request.query_params['hash']
             user_id = Session.objects.get(sess_hash=sess_hash).user_id
@@ -72,6 +75,7 @@ class ManageQrs(APIView):
 
 
     def put(self, request):
+        print(query_params)
         try:
             sess_hash = request.query_params['hash']
             id = request.query_params['id']
@@ -92,6 +96,7 @@ class ManageQrs(APIView):
 
 
     def delete(self, request):
+        print(query_params)
         try:
             sess_hash = request.query_params['hash']
             id = request.query_params['id']
