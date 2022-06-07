@@ -32,8 +32,6 @@ DEBUG = True
 #     ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS').split(' ')
 ALLOWED_HOSTS = ['*']
 
-APPEND_SLASH = False
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -151,6 +149,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:8000',
     'http://localhost:8080',
     'http://kchaw.ru',
+    'https://kchaw.ru',
 ]
 
 

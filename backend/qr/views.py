@@ -14,6 +14,7 @@ from .models import Session, QrCode
 from .serializers import QrSerializer
 
 
+# работает
 def check_string(data):
     secret = hashlib.sha256()
     secret.update(settings.TGBOT.encode('utf-8'))
@@ -26,9 +27,10 @@ def check_string(data):
     return False
 
 
+# работает
 class StartSession(APIView):
     def post(self, request):
-        print(request.query_params)
+        print(request.data)
         if check_string(request.data):
             user_id = request.data['id']
             old_sessions = Session.objects.filter(user_id=user_id)
@@ -42,6 +44,7 @@ class StartSession(APIView):
             
 
 class ManageQrs(APIView):
+    # работает
     def get(self, request):
         print(request.query_params)
         try:
@@ -52,20 +55,20 @@ class ManageQrs(APIView):
         except:
             return Response({})
 
-
+    # работает
     def post(self, request):
-        print(request.query_params)
+        print(request.data)
         try:
-            sess_hash = request.query_params['hash']
+            sess_hash = request.data['hash']
             user_id = Session.objects.get(sess_hash=sess_hash).user_id
-            url = request.query_params['url']
+            url = request.data['url']
         except:
             return Response({'success': False})
 
         qr = QrCode(user_id=user_id, url=url, entries=0)
 
         try:
-            name = request.query_params['name']
+            name = request.data['name']
             qr.name = name
         except:
             pass
@@ -75,7 +78,7 @@ class ManageQrs(APIView):
 
 
     def put(self, request):
-        print(query_params)
+        print(request.query_params)
         try:
             sess_hash = request.query_params['hash']
             id = request.query_params['id']
@@ -96,7 +99,7 @@ class ManageQrs(APIView):
 
 
     def delete(self, request):
-        print(query_params)
+        print(request.query_params)
         try:
             sess_hash = request.query_params['hash']
             id = request.query_params['id']
@@ -113,6 +116,29 @@ class ManageQrs(APIView):
             return Response({'success': True})
         except:
             return Response({'success': False})
+
+
+class TestApi(APIView):
+    def get(self, request):
+        # print(request.data)
+        print(request.query_params)
+        return Response({})
+
+    def post(self, request):
+        # print(request.data)
+        print(request.query_params)
+        return Response({})
+
+    def put(self, request):
+        # print(request.data)
+        print(request.query_params)
+        return Response({})
+
+    def delete(self, request):
+        #  print(request.data)
+        print(request.query_params)
+        return Response({})
+    
 
 
 def Redirect(request, id):

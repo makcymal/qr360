@@ -4,22 +4,8 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import store from "@/store";
 
-export default defineComponent({
-  mounted() {
-    store.dispatch("onAuth", {
-      first_name: "qwerty",
-      username: "maksim",
-      id: "123456789",
-    });
-    // store.dispatch("createQr", {
-    //   hash: "12345qwerty",
-    //   url: "aboba.ru",
-    //   name: "abeba",
-    // });
-  },
-});
+export default defineComponent({});
 </script>
 
 <style lang="css" scoped>

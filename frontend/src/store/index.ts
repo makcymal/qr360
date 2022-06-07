@@ -1,13 +1,21 @@
 import { createStore } from "vuex";
 import axios from "axios";
 
+// first_name: Максим
+// last_name: undefined
+// username: the_makcym
+// id: 773182128
+// photo_url: https://t.me/i/userpic/320/EoXW_hEei9Ranze9sKjLBFiaifvJo4eLEV8VVXSSN3k.jpg
+// auth_date: 1654601246
+// hash: 3dce944d672e929e9a3a14988668ba8f01c10ca35b75bd0e5f1286f9698880a2
+
 export default createStore({
   state: {
     // чтобы можно было перенаправлять на главную
     isAuth: false,
     sessionHash: "",
     user: Object,
-    api: "http://localhost:8000/api/",
+    api: "https://smooth-symbols-heal-82-162-0-122.loca.lt/api/",
     qrs: [Object],
   },
   getters: {},
