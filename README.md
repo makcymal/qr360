@@ -1,12 +1,14 @@
-# qr
+# QR360
 ## setup:
 
 1. go to the frontend folder
-
-    ` cd frontend `
+```
+cd front
+```
 
 2. install
-
-    ` yarn `
+```
+yarn
+```
 
 3. go to the docker folder and pick dev or prod docker containers

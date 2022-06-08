@@ -1,18 +1,14 @@
-__pycache__
-migrations
-
-*.sqlite3
-media
-
 .DS_Store
 node_modules
 /dist
 
+/tests/e2e/videos/
+/tests/e2e/screenshots/
+
+
 # local env files
-/venv
 .env.local
 .env.*.local
-.env
 
 # Log files
 npm-debug.log*
@@ -28,6 +24,3 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
-
-yarn.lock
-package-lock.json

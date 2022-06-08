@@ -1,2 +1,0 @@
-F1F1F1 - light gray
-FFC239 - yellow
