@@ -2,8 +2,6 @@ from django.db import models
 import qrcode
 import qrcode.image.svg
 from io import BytesIO
-from PIL import Image
-from django.core.files import File
 from django.core.files.base import ContentFile
 
 
