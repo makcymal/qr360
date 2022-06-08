@@ -37,7 +37,6 @@
                 :placeholder="'dvfu.ru'"
                 :icon_name="'link'"
                 :btn_name="'thunder'"
-                @clicked="updateQr"
               ></easy-input>
             </div>
             <img src="@/assets/qr-code.gif" class="qrcode" />
@@ -65,10 +64,6 @@ export default defineComponent({
   methods: {
     onAuth(user: any) {
       store.dispatch("onAuth", user);
-    },
-
-    updateQr() {
-      console.log("aboba");
     },
   },
 });

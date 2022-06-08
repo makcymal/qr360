@@ -1,13 +1,15 @@
 <template lang="html">
-  <home-page></home-page>
+  <home-page v-if="!$store.state.isAuth"></home-page>
+  <qrs-page v-else></qrs-page>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import HomePage from "@/pages/HomePage.vue";
+import QrsPage from "@/pages/QrsPage.vue";
 
 export default defineComponent({
-  components: { HomePage },
+  components: { HomePage, QrsPage },
 });
 </script>
 
