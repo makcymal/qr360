@@ -15,7 +15,7 @@ export default createStore({
     isAuth: false,
     sessionHash: "",
     user: Object,
-    api: "https://smooth-symbols-heal-82-162-0-122.loca.lt/api/",
+    api: "http://localhost:8000/api/",
     qrs: [Object],
   },
   getters: {},
