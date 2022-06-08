@@ -1,6 +1,8 @@
 __pycache__
 migrations
-# *.sqlite3
+
+*.sqlite3
+media
 
 .DS_Store
 node_modules
@@ -26,3 +28,6 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+yarn.lock
+package-lock.json

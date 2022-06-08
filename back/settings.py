@@ -19,9 +19,12 @@ SECRET_KEY = 'django-insecure-v%n%urhg#$3i9ofm-6-6_dgy@r=sk^dnz2fft(=$nc0x+-usl1
 # DEBUG = int(os.environ.get('DEBUG', default=0))
 DEBUG = True
 
+# Our production host, this or 'qr360.tk/' or any else
+PROD_HOST = 'kchaw.ru/'
+
 # if os.environ.get('DJANGO_ALLOWED_HOSTS') is not None:
 #     ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS').split(' ')
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -128,6 +131,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'front', 'dist', 'static')
 STATICFILES_DIRS = []
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+
+# Saving images on server
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
@@ -143,6 +152,7 @@ REST_FRAMEWORK = {
     ]
 }
 
+
 # access to API from different source
 CORS_ALLOWED_ORIGINS = [
     # vue dev server
@@ -151,7 +161,10 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:8080',
     'http://kchaw.ru',
     'https://kchaw.ru',
+    'http://qr360.tk',
+    'https://qr360.tk',
 ]
+
 
 # telegram bot secret key for auth
 TGBOT = '5195521399:AAHCKGLCVmrQ19xQ5g6hSL5SqPQfXQvSbpg'

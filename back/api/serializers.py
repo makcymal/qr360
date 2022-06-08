@@ -6,4 +6,4 @@ from .models import QrCode
 class QrSerializer(serializers.ModelSerializer):
     class Meta:
         model = QrCode
-        fields = ('id', 'name', 'url', 'entries')
+        fields = ('id', 'name', 'url', 'entries', 'get_image')
