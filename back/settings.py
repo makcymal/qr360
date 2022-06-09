@@ -16,15 +16,16 @@ sys.path.insert(0, PROJECT_DIR)
 SECRET_KEY = 'django-insecure-v%n%urhg#$3i9ofm-6-6_dgy@r=sk^dnz2fft(=$nc0x+-usl1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = int(os.environ.get('DEBUG', default=0))
-DEBUG = True
+DEBUG = int(os.environ.get('DEBUG', default=0))
+# DEBUG = True
 
 # Our production host, this or 'qr360.tk/' or any else
 PROD_HOST = 'kchaw.ru/'
 
-# if os.environ.get('DJANGO_ALLOWED_HOSTS') is not None:
-#     ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS').split(' ')
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
+if os.environ.get('DJANGO_ALLOWED_HOSTS') is not None:
+    ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS').split(' ')
+# ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -85,6 +86,17 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
+#         "NAME": os.environ.get("SQL_DATABASE", os.path.join(BASE_DIR, "db.sqlite3")),
+#         "USER": os.environ.get("SQL_USER", "user"),
+#         "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
+#         "HOST": os.environ.get("SQL_HOST", "localhost"),
+#         "PORT": os.environ.get("SQL_PORT", "5432"),
+#     }
+# }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -125,6 +137,8 @@ MIDDLEWARE_CLASSES = (
 )
 
 STATIC_URL = 'static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR + '/media/'
 
 # Place static in the same location as webpack build files
 STATIC_ROOT = os.path.join(BASE_DIR, 'front', 'dist', 'static')
@@ -156,6 +170,7 @@ REST_FRAMEWORK = {
 # access to API from different source
 CORS_ALLOWED_ORIGINS = [
     # vue dev server
+    'http://0.0.0.0:8000',
     'http://localhost:3000',
     'http://localhost:8000',
     'http://localhost:8080',
