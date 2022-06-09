@@ -16,16 +16,16 @@ sys.path.insert(0, PROJECT_DIR)
 SECRET_KEY = 'django-insecure-v%n%urhg#$3i9ofm-6-6_dgy@r=sk^dnz2fft(=$nc0x+-usl1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = int(os.environ.get('DEBUG', default=0))
-# DEBUG = True
+# DEBUG = int(os.environ.get('DEBUG', default=0))
+DEBUG = True
 
 # Our production host, this or 'qr360.tk/' or any else
 PROD_HOST = 'kchaw.ru/'
 
-ALLOWED_HOSTS = []
-if os.environ.get('DJANGO_ALLOWED_HOSTS') is not None:
-    ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS').split(' ')
-# ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = []
+# if os.environ.get('DJANGO_ALLOWED_HOSTS') is not None:
+#     ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS').split(' ')
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition

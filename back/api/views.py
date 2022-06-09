@@ -134,6 +134,7 @@ class ManageQr(APIView):
             return Response({'success': False})
 
         try:
+            qr.image.delete(save=True)
             qr.delete()
             return Response({'success': True})
         except:
