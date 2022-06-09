@@ -137,8 +137,6 @@ MIDDLEWARE_CLASSES = (
 )
 
 STATIC_URL = 'static/'
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR + '/media/'
 
 # Place static in the same location as webpack build files
 STATIC_ROOT = os.path.join(BASE_DIR, 'front', 'dist', 'static')
