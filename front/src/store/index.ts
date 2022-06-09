@@ -13,7 +13,7 @@ import axios from "axios";
 export default createStore({
   state: {
     isAuth: false,
-    sessionHash: "demo",
+    sessionHash: "",
     user: Object,
     api: "http://localhost:8000/api/",
     qrs: [{ id: "", url: "", name: "", entries: 0, get_image: "" }],
@@ -24,6 +24,7 @@ export default createStore({
     msg: "",
     msgTime: 0,
   },
+
   actions: {
     onAuth({ state, dispatch }, user) {
       state.isAuth = true;
