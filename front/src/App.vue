@@ -1,6 +1,7 @@
 <template lang="html">
   <home-page v-if="!$store.state.isAuth"></home-page>
   <qrs-page v-else></qrs-page>
+  <easy-msg :msg="$store.state.msg" :msgTime="$store.state.msgTime"></easy-msg>
 </template>
 
 <script lang="ts">
@@ -19,6 +20,8 @@ export default defineComponent({
 body {
   margin: 0;
   padding: 0;
+  width: 100vw;
+  overflow: hidden;
 }
 
 button {

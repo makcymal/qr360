@@ -21,7 +21,7 @@ from .serializers import QrSerializer
 AppView = never_cache(TemplateView.as_view(template_name='index.html'))
 
 
-# works properly
+# works
 def check_string(data):
     secret = hashlib.sha256()
     secret.update(settings.TGBOT.encode('utf-8'))
@@ -34,7 +34,7 @@ def check_string(data):
     return False
 
 
-# works properly
+# works
 class StartSession(APIView):
     def post(self, request):
         try:
@@ -45,25 +45,42 @@ class StartSession(APIView):
                 sess_hash = ''.join(random.choice(string.ascii_lowercase + string.ascii_uppercase + string.digits) for i in range(32))
                 s = Session(user_id=user_id, sess_hash=sess_hash)
                 s.save()
-                return Response({'hash': sess_hash})
+                return Response({'success': True, 'hash': sess_hash})
             else:
-                return Response({'hash': ''})
+                return Response({'success': False})
         except:
-            return Response({'hash': ''})
-            
+            return Response({'success': False})
 
-class ManageQrs(APIView):
-    # works properly
+
+# works
+class AllQrs(APIView):
     def get(self, request):
         try:
             sess_hash = request.query_params['hash']
             user_id = Session.objects.get(sess_hash=sess_hash).user_id
             qrs = QrCode.objects.filter(user_id=user_id)
-            return Response({'qrs': QrSerializer(qrs, many=True).data})
+            return Response({'success': True, 'qrs': QrSerializer(qrs, many=True).data})
         except:
-            return Response({})
+            return Response({'success': False})
 
-    # works properly
+
+# works
+class ManageQr(APIView):
+    def get(self, request):
+        try:
+            sess_hash = request.query_params['hash']
+            session = Session.objects.get(sess_hash=sess_hash)
+            qr_id = request.query_params['id']
+            qr = QrCode.objects.get(pk=qr_id)
+        except:
+            return Response({'success': False})
+
+        if (qr.user_id != session.user_id):
+            return Response({'success': False})
+
+        return Response({'success': True, 'qr': QrSerializer(qr).data})
+
+
     def post(self, request):
         try:
             sess_hash = request.data['hash']
@@ -81,15 +98,15 @@ class ManageQrs(APIView):
             pass
 
         qr.save()
-        return Response({'success': True})
+        return Response({'success': True, 'qr': QrSerializer(qr).data})
 
-    # works properly
+
     def put(self, request):
         try:
             sess_hash = request.data['hash']
             session = Session.objects.get(sess_hash=sess_hash)
-            id = request.data['id']
-            qr = QrCode.objects.get(pk=id)
+            qr_id = request.data['id']
+            qr = QrCode.objects.get(pk=qr_id)
         except:
             return Response({'success': False})
 
@@ -99,17 +116,17 @@ class ManageQrs(APIView):
         for field in request.data:
             if field != 'hash' and field != 'id':
                 setattr(qr, field, request.data[field])
-        qr.save()
         
-        return Response({'success': True})
+        qr.save()
+        return Response({'success': True, 'qr': QrSerializer(qr).data})
 
-    # works properly
+
     def delete(self, request):
         try:
             sess_hash = request.data['hash']
             session = Session.objects.get(sess_hash=sess_hash)
-            id = request.data['id']
-            qr = QrCode.objects.get(pk=id)
+            qr_id = request.data['id']
+            qr = QrCode.objects.get(pk=qr_id)
         except:
             return Response({'success': False})
 
@@ -123,10 +140,10 @@ class ManageQrs(APIView):
             return Response({'success': False})
 
 
-# works properly
-def Redirect(request, id):
+# works
+def Redirect(request, qr_id):
     try:
-        qr = QrCode.objects.get(pk=id)
+        qr = QrCode.objects.get(pk=qr_id)
         qr.entries += 1
         qr.save()
         return HttpResponseRedirect('http://' + qr.url)

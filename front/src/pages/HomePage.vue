@@ -33,13 +33,14 @@
             </div>
             <div class="input-wrapper">
               <easy-input
-                v-model="qrQuery"
+                v-model="demoQrUrl"
                 :placeholder="'dvfu.ru'"
                 :icon_name="'link'"
                 :btn_name="'thunder'"
+                @clicked="updateDemoQr()"
               ></easy-input>
             </div>
-            <img src="@/assets/qr-code.gif" class="qrcode" />
+            <img :src="$store.state.demoQrImage" class="qrcode" />
           </div>
         </div>
       </div>
@@ -57,7 +58,7 @@ export default defineComponent({
   data() {
     return {
       explanationVisible: false,
-      qrQuery: "",
+      demoQrUrl: "",
     };
   },
 
@@ -65,6 +66,17 @@ export default defineComponent({
     onAuth(user: any) {
       store.dispatch("onAuth", user);
     },
+
+    updateDemoQr() {
+      store.dispatch("updateDemoQr", this.demoQrUrl);
+      this.demoQrUrl = "";
+    },
+  },
+
+  mounted() {
+    if (store.state.demoQrImage == "") {
+      store.dispatch("createDemoQr");
+    }
   },
 });
 </script>
