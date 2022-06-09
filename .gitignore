@@ -31,3 +31,4 @@ pnpm-debug.log*
 
 yarn.lock
 package-lock.json
+/postgres_data
