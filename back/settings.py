@@ -179,5 +179,11 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 
+# CELERY_BROKER_URL = os.environ.get('CELERY_BROKER')
+# CELERY_RESULT_BACKEND = os.environ.get('CELERY_BACKEND')
+CELERY_BROKER_URL = "redis://redis:6379"
+CELERY_RESULT_BACKEND = "redis://redis:6379"
+
+
 # telegram bot secret key for auth
 TGBOT = '5195521399:AAHCKGLCVmrQ19xQ5g6hSL5SqPQfXQvSbpg'
