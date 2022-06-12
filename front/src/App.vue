@@ -1,5 +1,5 @@
 <template lang="html">
-  <home-page v-if="!$store.state.isAuth"></home-page>
+  <home-page v-if="$store.state.isAuth"></home-page>
   <qrs-page v-else></qrs-page>
   <easy-msg :msg="$store.state.msg" :msgTime="$store.state.msgTime"></easy-msg>
 </template>
@@ -21,7 +21,7 @@ body {
   margin: 0;
   padding: 0;
   width: 100vw;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 button {

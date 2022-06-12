@@ -77,7 +77,7 @@ p {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(220, 220, 220);
+  background-color: rgb(230, 230, 230);
   border-radius: 0.5em;
   transition: all 0.3s ease-in-out;
 }
@@ -88,9 +88,9 @@ p {
 
 .explanation-wrapper {
   position: absolute;
-  width: 120%;
+  width: 160%;
   top: calc(100% + 8px);
-  left: -10%;
+  left: -30%;
   z-index: 10;
   display: flex;
   flex-direction: column;
@@ -102,7 +102,7 @@ p {
   content: "";
   border-style: solid;
   border-width: 0 6px 8px 6px;
-  border-color: transparent transparent rgb(220, 220, 220) transparent;
+  border-color: transparent transparent rgb(230, 230, 230) transparent;
   position: absolute;
   bottom: 100%;
   left: calc(50% - 6px);
@@ -110,7 +110,7 @@ p {
 
 .explanation {
   user-select: none;
-  background-color: rgb(220, 220, 220);
+  background-color: rgb(230, 230, 230);
   margin: 0;
   padding: 0.6em;
   text-align: center;

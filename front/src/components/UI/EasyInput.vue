@@ -1,8 +1,5 @@
 <template lang="html">
   <div class="wrapper">
-    <div v-if="icon_name" class="icon-wrapper">
-      <easy-icon :icon_name="icon_name"></easy-icon>
-    </div>
     <div class="input-wrapper">
       <input
         type="text"
@@ -18,6 +15,7 @@
     <div v-if="btn_name" class="btn-wrapper">
       <easy-button
         :icon_name="btn_name"
+        :description="btn_desc"
         @clicked="$emit('clicked')"
       ></easy-button>
     </div>
@@ -38,11 +36,12 @@ export default defineComponent({
       type: String,
       default: "",
     },
-    icon_name: {
-      type: String,
-    },
     btn_name: {
       type: String,
+    },
+    btn_desc: {
+      type: String,
+      default: "",
     },
   },
 });
@@ -59,14 +58,9 @@ export default defineComponent({
   align-items: center;
 }
 
-.icon-wrapper {
-  width: 6%;
-  height: 80%;
-}
-
 .input-wrapper {
   position: relative;
-  width: 80%;
+  width: 85%;
   height: 100%;
   display: flex;
   justify-content: center;
@@ -92,7 +86,6 @@ input:focus {
   top: 0;
   right: 0;
   height: 100%;
-  background-color: white;
   display: flex;
   justify-content: center;
   align-items: center;

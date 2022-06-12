@@ -34,9 +34,9 @@
             <div class="input-wrapper">
               <easy-input
                 v-model="demoQrUrl"
-                :placeholder="'dvfu.ru'"
-                :icon_name="'link'"
+                :placeholder="'Введите ссылку'"
                 :btn_name="'thunder'"
+                :btn_desc="'Обновить QR'"
                 @clicked="updateDemoQr()"
               ></easy-input>
             </div>
@@ -155,7 +155,7 @@ export default defineComponent({
 
 .explanation {
   user-select: none;
-  background-color: rgb(220, 220, 220);
+  background-color: rgb(230, 230, 230);
   position: absolute;
   width: 90%;
   top: calc(100% + 10px);

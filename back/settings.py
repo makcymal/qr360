@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'back.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, 'back', 'db.sqlite3'),
     }
 }
 
@@ -183,6 +183,7 @@ CORS_ALLOWED_ORIGINS = [
 # CELERY_RESULT_BACKEND = os.environ.get('CELERY_BACKEND')
 CELERY_BROKER_URL = "redis://redis:6379"
 CELERY_RESULT_BACKEND = "redis://redis:6379"
+CELERY_TIMEZONE = "Asia/Vladivostok"
 
 
 # telegram bot secret key for auth
