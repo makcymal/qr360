@@ -66,9 +66,9 @@ export default defineComponent({
 }
 
 .icon {
-  width: 70%;
-  max-width: 70%;
-  height: 70%;
-  max-height: 70%;
+  width: 65%;
+  max-width: 65%;
+  height: 65%;
+  max-height: 65%;
 }
 </style>

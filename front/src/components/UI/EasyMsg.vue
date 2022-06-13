@@ -59,7 +59,7 @@ export default defineComponent({
   max-height: 10%;
   top: 0.5em;
   right: 0.5em;
-  background-color: rgb(220, 220, 220);
+  background-color: rgb(230, 230, 230);
   border-radius: 0.5em;
   display: flex;
   flex-direction: column;

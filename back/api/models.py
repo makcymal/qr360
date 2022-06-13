@@ -19,6 +19,10 @@ class QrCode(models.Model):
     name = models.CharField(max_length=50, blank=True, default='')
     # куда надо редиректить, при сканировании qr
     url = models.TextField(max_length=8192)
+    # отложенный урл
+    next_url = models.TextField(max_length=8192, blank=True, default='')
+    # время, на которое отложен урл
+    next_url_time = models.CharField(max_length=20, blank=True, default='')
     # количество переходов по qr
     entries = models.IntegerField(default=0)
     # qrcode image
