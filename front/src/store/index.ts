@@ -1,7 +1,6 @@
 import { createStore } from "vuex";
 import axios from "axios";
 
-// tg auth validated data example:
 // first_name: Максим
 // last_name: undefined
 // username: the_makcym
@@ -12,207 +11,79 @@ import axios from "axios";
 
 export default createStore({
   state: {
+    // чтобы можно было перенаправлять на главную
     isAuth: false,
     sessionHash: "",
     user: Object,
     api: "http://localhost:8000/api/",
-    qrs: [{ id: "", url: "", name: "", entries: 0, get_image: "" }],
-
-    demoQrId: 0,
-    demoQrImage: "",
-
-    msg: "",
-    msgTime: 0,
+    qrs: [Object],
   },
-
+  getters: {
+    userQrs(state){
+      return state.qrs;
+    },
+    qrsCount(state){
+      return state.qrs.length;
+    },
+  },
+  mutations: {},
   actions: {
-    onAuth({ state, dispatch }, user) {
+
+    onAuth({ state, commit, dispatch }, user) {
+      console.log(
+        `first_name: ${user.first_name} \nlast_name: ${user.last_name} \nusername: ${user.username} \nid: ${user.id} \nphoto_url: ${user.photo_url} \nauth_date: ${user.auth_date} \nhash: ${user.hash}`
+      );
       state.isAuth = true;
       state.user = user;
 
+      // работает
       axios
         .post(state.api + "s", user)
         .then(function (response) {
-          if (response.data.success) {
-            state.sessionHash = response.data.hash;
-            dispatch("getAllQrs");
-          } else {
-            state.msg =
-              "При авторизации произошла ошибка, пожалуйста, перезагрузите страницу и попробуйте заново";
-            state.msgTime = Date.now();
-          }
+          console.log(response.data.hash);
+          state.sessionHash = response.data.hash;
+
+          dispatch("getQrs");
         })
         .catch(function (error) {
-          state.msg =
-            "При авторизации произошла ошибка, пожалуйста, перезагрузите страницу и попробуйте заново";
-          state.msgTime = Date.now();
+          console.log(error);
         });
     },
 
-    getAllQrs({ state }) {
+    getQrs({ state }) {
+      // работает
       axios
-        .get(state.api + `qrs?hash=${state.sessionHash}`)
+        .get(state.api + `qr?hash=${state.sessionHash}`)
         .then(function (response) {
-          if (response.data.success) {
-            state.qrs = response.data.qrs;
-          } else {
-            state.msg =
-              "Не удалось загрузить QR, пожалуйста, перезагрузите страницу";
-            state.msgTime = Date.now();
-          }
+          console.log(response.data);
+          state.qrs = response.data.qrs;
         })
         .catch(function (error) {
-          state.msg =
-            "Не удалось загрузить QR, пожалуйста, перезагрузите страницу";
-          state.msgTime = Date.now();
+          console.log(error);
         });
     },
 
-    getQr({ state }, qrId) {
-      axios
-        .get(state.api + `qr?hash=${state.sessionHash}&id=${qrId}`)
-        .then(function (response) {
-          if (response.data.success) {
-            for (let savedQr of state.qrs) {
-              if (savedQr.id == qrId) {
-                savedQr = response.data.qr;
-                break;
-              }
-            }
-          } else {
-            state.msg =
-              "Не удалось загрузить QR, пожалуйста, перезагрузите страницу";
-            state.msgTime = Date.now();
-          }
-        })
-        .catch(function (error) {
-          state.msg =
-            "Не удалось загрузить QR, пожалуйста, перезагрузите страницу";
-          state.msgTime = Date.now();
-        });
-    },
-
-    // qr = { url: string, name: string (optional) }
-    createQr({ state }, qr) {
-      qr.hash = state.sessionHash;
+    // qr = { hash: "", url: "", name: "" (optional) }
+    createQr({ state, dispatch }, qr) {
+      console.log(qr);
       axios
         .post(state.api + "qr", qr)
         .then(function (response) {
-          if (response.data.success) {
-            state.qrs.push(response.data.qr);
-            state.msg = "QR создан";
-            state.msgTime = Date.now();
-          } else {
-            state.msg =
-              "Произошла ошибка, пожалуйста, перезагрузите страницу и попробуйте заново";
-            state.msgTime = Date.now();
-          }
+          console.log(response.data);
+          // dispatch("getQrs");
         })
         .catch(function (error) {
-          state.msg =
-            "Произошла ошибка, пожалуйста, перезагрузите страницу и попробуйте заново";
-          state.msgTime = Date.now();
+          console.log(error);
         });
     },
 
-    // qr = { id: number, url: string (optional), name: string (optional) }
-    updateQr({ state }, qr) {
-      qr.hash = state.sessionHash;
-      axios
-        .put(state.api + "qr", qr)
-        .then(function (response) {
-          if (response.data.success) {
-            for (let savedQr of state.qrs) {
-              if (savedQr.id == qr.id) {
-                savedQr = response.data.qr;
-                break;
-              }
-            }
-            state.msg = "QR обновлен";
-            state.msgTime = Date.now();
-          } else {
-            state.msg =
-              "Произошла ошибка, пожалуйста, перезагрузите страницу и попробуйте заново";
-            state.msgTime = Date.now();
-          }
-        })
-        .catch(function (error) {
-          state.msg =
-            "Произошла ошибка, пожалуйста, перезагрузите страницу и попробуйте заново";
-          state.msgTime = Date.now();
-        });
-    },
-
-    deleteQr({ state }, qrId) {
-      axios
-        .delete(state.api + "qr", {
-          data: { hash: state.sessionHash, id: qrId },
-        })
-        .then(function (response) {
-          if (response.data.success) {
-            let i = 0;
-            for (const savedQr of state.qrs) {
-              if (savedQr.id == qrId) {
-                state.qrs.splice(i, 1);
-                break;
-              }
-              i++;
-            }
-            state.msg = "QR удален";
-            state.msgTime = Date.now();
-          } else {
-            state.msg =
-              "Произошла ошибка, пожалуйста, перезагрузите страницу и попробуйте заново";
-            state.msgTime = Date.now();
-          }
-        })
-        .catch(function (error) {
-          state.msg =
-            "Произошла ошибка, пожалуйста, перезагрузите страницу и попробуйте заново";
-          state.msgTime = Date.now();
-        });
-    },
-
-    createDemoQr({ state }) {
-      axios
-        .post(state.api + "qr", {
-          hash: "demo",
-          url: "https://github.com/the-makcym/qr",
-        })
-        .then(function (response) {
-          if (response.data.success) {
-            state.demoQrId = response.data.qr.id;
-            state.demoQrImage = response.data.qr.get_image;
-          } else {
-            state.msg = "Произошла ошибка, пожалуйста, перезагрузите страницу";
-            state.msgTime = Date.now();
-          }
-        })
-        .catch(function (error) {
-          state.msg = "Произошла ошибка, пожалуйста, перезагрузите страницу";
-          state.msgTime = Date.now();
-        });
-    },
-
-    updateDemoQr({ state }, qrUrl) {
-      if (qrUrl == "") {
-        return;
+    delQr({state}, qr){
+      for(let i=0; i<state.qrs.length; ++i){
+        if(state.qrs[i] === qr){
+          delete(state.qrs[i]);
+          break;
+        }
       }
-      axios
-        .put(state.api + "qr", { hash: "demo", id: state.demoQrId, url: qrUrl })
-        .then(function (response) {
-          if (response.data.success) {
-            state.msg = "Содержимое QR кода обновлено";
-            state.msgTime = Date.now();
-          } else {
-            state.msg = "Произошла ошибка, пожалуйста, перезагрузите страницу";
-            state.msgTime = Date.now();
-          }
-        })
-        .catch(function (error) {
-          state.msg = "Произошла ошибка, пожалуйста, перезагрузите страницу";
-          state.msgTime = Date.now();
-        });
-    },
+    }
   },
 });
