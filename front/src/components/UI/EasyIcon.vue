@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="container">
     <div v-for="icon in icons" :key="icon.name" class="filler">
-      <div v-if="icon_name == icon.name" class="filler wrapper">
+      <div v-if="iconName == icon.name" class="filler wrapper">
         <img :src="icon.src" class="icon" />
       </div>
     </div>
@@ -18,6 +18,7 @@ export default defineComponent({
     return {
       icons: [
         { name: "calendar", src: require("@/assets/icons/calendar.svg") },
+        { name: "code", src: require("@/assets/icons/code.svg") },
         { name: "copy", src: require("@/assets/icons/copy.svg") },
         { name: "download", src: require("@/assets/icons/download.svg") },
         { name: "empty_name", src: require("@/assets/icons/empty_name.svg") },
@@ -30,7 +31,7 @@ export default defineComponent({
   },
 
   props: {
-    icon_name: {
+    iconName: {
       type: String,
       default: "thunder",
     },

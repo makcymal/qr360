@@ -1,14 +1,16 @@
 <template lang="html">
-  <home-page></home-page>
+  <home-page v-if="$store.state.isAuth"></home-page>
+  <qrs-page v-else></qrs-page>
+  <easy-msg :msg="$store.state.msg" :msgTime="$store.state.msgTime"></easy-msg>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import HomePage from "@/pages/HomePage.vue";
-import MyQrsPage from "@/pages/MyQrsPage.vue";
+import QrsPage from "@/pages/QrsPage.vue";
 
 export default defineComponent({
-  components: { HomePage, MyQrsPage },
+  components: { HomePage, QrsPage },
 });
 </script>
 
@@ -18,6 +20,8 @@ export default defineComponent({
 body {
   margin: 0;
   padding: 0;
+  width: 100vw;
+  overflow-x: hidden;
 }
 
 button {

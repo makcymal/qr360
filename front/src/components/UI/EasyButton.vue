@@ -6,14 +6,11 @@
     class="wrapper"
   >
     <div class="icon-wrapper">
-      <easy-icon :icon_name="icon_name"></easy-icon>
+      <easy-icon :iconName="iconName"></easy-icon>
     </div>
-    <div
-      v-if="explanationVisible && description != ''"
-      class="explanation-wrapper"
-    >
+    <div v-if="explanationVisible && desc" class="explanation-wrapper">
       <p class="explanation">
-        {{ description }}
+        <slot></slot>
       </p>
     </div>
   </div>
@@ -28,27 +25,17 @@ export default defineComponent({
   data() {
     return {
       explanationVisible: false,
-      icons: [
-        { name: "calendar", src: require("@/assets/icons/calendar.svg") },
-        { name: "copy", src: require("@/assets/icons/copy.svg") },
-        { name: "download", src: require("@/assets/icons/download.svg") },
-        { name: "empty_name", src: require("@/assets/icons/empty_name.svg") },
-        { name: "link", src: require("@/assets/icons/link.svg") },
-        { name: "setted_name", src: require("@/assets/icons/setted_name.svg") },
-        { name: "stat", src: require("@/assets/icons/stat.svg") },
-        { name: "thunder", src: require("@/assets/icons/thunder.svg") },
-      ],
     };
   },
 
   props: {
-    icon_name: {
+    iconName: {
       type: String,
       default: "thunder",
     },
-    description: {
-      type: String,
-      default: "",
+    desc: {
+      type: Boolean,
+      default: false,
     },
   },
 });

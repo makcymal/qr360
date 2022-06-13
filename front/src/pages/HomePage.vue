@@ -179,7 +179,6 @@ export default defineComponent({
 
 .input-wrapper {
   width: 100%;
-  height: 3em;
 }
 
 .qrcode {

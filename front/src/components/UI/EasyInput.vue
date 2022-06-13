@@ -1,5 +1,11 @@
 <template lang="html">
   <div class="wrapper">
+    <div class="title-wrapper">
+      <p class="title">
+        <slot></slot>
+      </p>
+    </div>
+
     <div class="input-wrapper">
       <input
         type="text"
@@ -11,13 +17,6 @@
       <div class="clear-wrapper">
         <p @click="$emit('update:modelValue', '')" class="clear-btn">×</p>
       </div>
-    </div>
-    <div v-if="btn_name" class="btn-wrapper">
-      <easy-button
-        :icon_name="btn_name"
-        :description="btn_desc"
-        @clicked="$emit('clicked')"
-      ></easy-button>
     </div>
   </div>
 </template>
@@ -36,13 +35,6 @@ export default defineComponent({
       type: String,
       default: "",
     },
-    btn_name: {
-      type: String,
-    },
-    btn_desc: {
-      type: String,
-      default: "",
-    },
   },
 });
 </script>
@@ -51,17 +43,20 @@ export default defineComponent({
 .wrapper {
   position: relative;
   width: 100%;
-  height: 100%;
   display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
+}
+
+.title-wrapper {
+  width: 100%;
+  text-align: left;
 }
 
 .input-wrapper {
   position: relative;
-  width: 85%;
-  height: 100%;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -85,7 +80,6 @@ input:focus {
   position: absolute;
   top: 0;
   right: 0;
-  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -103,10 +97,5 @@ input:focus {
 
 .clear-btn:hover {
   color: #ffc239;
-}
-
-.btn-wrapper {
-  width: 9%;
-  height: 70%;
 }
 </style>
