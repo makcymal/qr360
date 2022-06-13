@@ -18,9 +18,17 @@ export default createStore({
     api: "http://localhost:8000/api/",
     qrs: [Object],
   },
-  getters: {},
+  getters: {
+    userQrs(state){
+      return state.qrs;
+    },
+    qrsCount(state){
+      return state.qrs.length;
+    },
+  },
   mutations: {},
   actions: {
+
     onAuth({ state, commit, dispatch }, user) {
       console.log(
         `first_name: ${user.first_name} \nlast_name: ${user.last_name} \nusername: ${user.username} \nid: ${user.id} \nphoto_url: ${user.photo_url} \nauth_date: ${user.auth_date} \nhash: ${user.hash}`
@@ -68,5 +76,14 @@ export default createStore({
           console.log(error);
         });
     },
+
+    delQr({state}, qr){
+      for(let i=0; i<state.qrs.length; ++i){
+        if(state.qrs[i] === qr){
+          delete(state.qrs[i]);
+          break;
+        }
+      }
+    }
   },
 });

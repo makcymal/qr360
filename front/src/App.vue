@@ -5,9 +5,10 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import HomePage from "@/pages/HomePage.vue";
+import MyQrsPage from "@/pages/MyQrsPage.vue";
 
 export default defineComponent({
-  components: { HomePage },
+  components: { HomePage, MyQrsPage },
 });
 </script>
 
