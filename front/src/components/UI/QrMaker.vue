@@ -61,6 +61,8 @@ export default defineComponent({
         url: this.url.trim(),
         name: this.name.trim(),
       });
+      this.name = "";
+      this.url = "";
     },
   },
 });

@@ -12,7 +12,7 @@ def update_url(*args, **kwargs):
     if qr.next_url_time != next_url_time:
         return False
 
-    if qr.next_url != ''
+    if qr.next_url != '':
         qr.url = qr.next_url
         qr.next_url = ''
 

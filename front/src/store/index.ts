@@ -15,28 +15,18 @@ export default createStore({
   state: {
     onHome: true,
     sessionHash: "",
-    user: "the-makcym",
+    user: "",
     api: "http://localhost:8000/api/",
     qrs: [
       {
-        id: "0",
+        id: "",
         name: "",
-        url: "aboba.ru",
+        url: "",
         next_url: "",
         next_url_time: "",
-        entries: 127,
-        get_image: "",
-        edit_time: 2,
-      },
-      {
-        id: "1",
-        name: "jopa",
-        url: "bebra.ru",
-        next_url: "dvfu.ru",
-        next_url_time: "2010-12-31 23.59",
+        edit_time: 0,
         entries: 0,
         get_image: "",
-        edit_time: 1,
       },
     ],
 
@@ -80,7 +70,7 @@ export default createStore({
         .then(function (response) {
           if (response.data.success) {
             state.qrs = response.data.qrs;
-            state.qrs.sort((a, b) => a.edit_time - b.edit_time);
+            state.qrs.sort((a, b) => b.edit_time - a.edit_time);
           } else {
             state.msg =
               "Не удалось загрузить QR, пожалуйста, перезагрузите страницу";
@@ -118,14 +108,17 @@ export default createStore({
         });
     },
 
-    // qr = { url: string, name: string (optional) }
+    // qr = { url: string [, name: string ] }
     createQr({ state }, qr) {
       if (!isUrlValid(qr.url)) {
-        state.msg = "Введите ссылку";
+        state.msg = "Введите корректную ссылку";
         state.msgTime = Date.now();
         return;
       }
+
       qr.hash = state.sessionHash;
+      qr.edit_time = Date.now();
+
       axios
         .post(state.api + "qr", qr)
         .then(function (response) {
@@ -133,6 +126,7 @@ export default createStore({
             state.qrs.push(response.data.qr);
             state.msg = "QR создан";
             state.msgTime = Date.now();
+            state.qrs.sort((a, b) => b.edit_time - a.edit_time);
           } else {
             state.msg =
               "Произошла ошибка, пожалуйста, перезагрузите страницу и попробуйте заново";
@@ -146,16 +140,25 @@ export default createStore({
         });
     },
 
-    // qr = { id: number, url: string (optional), name: string (optional) }
+    // qr = { id: number [, url: string, name: string, next_url: string, next_url_time: string ] }
     updateQr({ state }, qr) {
+      if (!isUrlValid(qr.url) || !isUrlValid(qr.next_url)) {
+        state.msg = "Введите корректную ссылку";
+        state.msgTime = Date.now();
+        return;
+      }
+
       qr.hash = state.sessionHash;
       qr.edit_time = Date.now();
 
-      qr.count = timeTo(qr.next_url_time);
-      if (qr.count <= 0) {
-        state.msg = "Укажите правильные дату и время";
-        state.msgTime = Date.now();
-        return;
+      if (qr.next_url_time != "" && qr.next_url != "") {
+        qr.count = timeTo(qr.next_url_time);
+
+        if (qr.count <= 0) {
+          state.msg = "Укажите правильные дату и время";
+          state.msgTime = Date.now();
+          return;
+        }
       }
 
       axios
@@ -170,9 +173,10 @@ export default createStore({
             }
             state.msg = "QR обновлен";
             state.msgTime = Date.now();
+            state.qrs.sort((a, b) => b.edit_time - a.edit_time);
           } else {
             state.msg =
-              "Произошла ошибка, пожалуйста, перезагрузите страницу и попробуйте заново";
+              "Произошла ошибка, пожалуйста, перезагрузите страницу и попробуйте заново!";
             state.msgTime = Date.now();
           }
         })

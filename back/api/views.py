@@ -87,10 +87,11 @@ class ManageQr(APIView):
             sess_hash = request.data['hash']
             user_id = Session.objects.get(sess_hash=sess_hash).user_id
             url = request.data['url']
+            edit_time = request.data['edit_time']
         except:
             return Response({'success': False})
 
-        qr = QrCode(user_id=user_id, url=url, entries=0)
+        qr = QrCode(user_id=user_id, url=url, edit_time=edit_time, entries=0)
 
         try:
             name = request.data['name']
@@ -109,32 +110,26 @@ class ManageQr(APIView):
             session = Session.objects.get(sess_hash=sess_hash)
             qr_id = request.data['id']
             qr = QrCode.objects.get(pk=qr_id)
+            edit_time = request.data['edit_time']
         except:
             return Response({'success': False})
+        print(request.data)
 
         if (qr.user_id != session.user_id):
             return Response({'success': False})
 
-        try:
-            url = request.data['url']
-            qr.url = url
-        except:
-            pass
+        qr.edit_time = edit_time
 
-        try:
-            name = request.data['name']
-            qr.name = name
-        except:
-            pass
+        for field in request.data:
+            if field != 'hash' and field != 'id' and field != 'edit_time' and field != 'timer':
+                try:
+                    setattr(qr, field, request.data[field])
+                except:
+                    pass
         
         try:
-            next_url = request.data['next_url']
-            next_url_time = request.data['next_url_time']
             timer = request.data['timer']
-
             update_url.apply_async((qr.id, next_url_time), countdown=int(timer))
-            qr.next_url = next_url
-            qr.next_url_time = next_url_time
         except:
             pass
 
@@ -161,15 +156,6 @@ class ManageQr(APIView):
         except:
             return Response({'success': False})
 
-
-def QrNextUrl(qr_id):
-    qr = QrCode.objects.get(id=qr_id)
-
-    qr.url = qr.next_url
-    qr.next_url = ""
-    qr.next_url_time = ""
-    qr.save()
-    return True
 
 # works
 def Redirect(request, qr_id):

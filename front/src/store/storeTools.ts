@@ -49,6 +49,6 @@ export function timeTo(time: string): number {
   const date = new Date(year, month, day, hour, min);
 
   const count = date.getTime() - Date.now();
-  if (count > 0) return count;
+  if (count > 0) return Math.floor(count / 1000);
   else return -1;
 }

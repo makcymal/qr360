@@ -2,16 +2,19 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-3 img-wrapper">
-        <img src="@/assets/qr.jpg" class="qr-img" />
+        <img :src="getImage" class="qr-img" />
         <p class="entries xs-font">Переходов по этому QR: {{ entries }}</p>
         <div class="qr-tools">
           <div class="quad-cont-sm">
-            <easy-button :iconName="'download'" :desc="true"
+            <easy-button
+              :iconName="'download'"
+              :desc="true"
+              @clicked="downloadImg()"
               >Скачать .svg</easy-button
             >
           </div>
           <div class="quad-cont-sm">
-            <easy-button :iconName="'code'" :desc="true"
+            <easy-button :iconName="'code'" :desc="true" @clicked="copyHtml()"
               >Вставить на сайт</easy-button
             >
           </div>
@@ -74,6 +77,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import store from "@/store";
+import axios from "axios";
+import { file } from "@babel/types";
 
 export default defineComponent({
   name: "qr-card",
@@ -97,6 +102,7 @@ export default defineComponent({
   },
 
   methods: {
+    // MOVE TO STORE GETTERS
     updateFromStore() {
       this.index = 0;
       for (let qr of store.state.qrs) {
@@ -115,6 +121,7 @@ export default defineComponent({
 
     updateQr() {
       store.dispatch("updateQr", {
+        id: this.qrId,
         name: this.name.trim(),
         url: this.url.trim(),
         next_url: this.nextUrl.trim(),
@@ -124,6 +131,26 @@ export default defineComponent({
 
     deleteQr() {
       store.dispatch("deleteQr", this.qrId);
+    },
+
+    downloadImg() {
+      axios({
+        url: this.getImage,
+        method: "GET",
+        responseType: "blob",
+      }).then((response) => {
+        let fileUrl = window.URL.createObjectURL(new Blob([response.data]));
+        let fileLink = document.createElement("a");
+        fileLink.href = fileUrl;
+
+        fileLink.setAttribute("download", `qr_${this.qrId}.svg`);
+        document.body.appendChild(fileLink);
+        fileLink.click();
+      });
+    },
+
+    copyHtml() {
+      navigator.clipboard.writeText(`<img src="${this.getImage}">`);
     },
   },
 

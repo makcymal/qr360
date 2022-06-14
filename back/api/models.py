@@ -23,6 +23,8 @@ class QrCode(models.Model):
     next_url = models.TextField(max_length=8192, blank=True, default='')
     # время, на которое отложен урл
     next_url_time = models.CharField(max_length=20, blank=True, default='')
+    # когда был создан\изменен
+    edit_time = models.IntegerField(default=0)
     # количество переходов по qr
     entries = models.IntegerField(default=0)
     # qrcode image

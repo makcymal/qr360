@@ -49,7 +49,7 @@
             aria-expanded="false"
             :aria-controls="`collapse-${qr.id}`"
           >
-            {{ qr.id }}
+            {{ qr.url }}
           </button>
         </h2>
         <div
@@ -77,6 +77,10 @@ export default defineComponent({
     toHome() {
       store.state.onHome = true;
     },
+  },
+
+  mounted() {
+    store.dispatch("getAllQrs");
   },
 });
 </script>
