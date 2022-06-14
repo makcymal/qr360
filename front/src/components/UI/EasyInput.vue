@@ -1,21 +1,22 @@
 <template lang="html">
-  <div class="wrapper">
-    <div class="title-wrapper">
-      <p class="title xs-font bold">
+  <div class="easy-input-wrapper">
+    <div class="input-title-wrapper">
+      <p class="xs-font bold">
         <slot></slot>
       </p>
     </div>
 
-    <div class="input-wrapper">
+    <div class="input-input-wrapper">
       <input
         type="text"
         spellcheck="false"
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
         :placeholder="placeholder"
+        class="input-input"
       />
-      <div class="clear-wrapper">
-        <p @click="$emit('update:modelValue', '')" class="clear-btn">×</p>
+      <div class="input-clear-wrapper">
+        <p @click="$emit('update:modelValue', '')" class="input-clear">×</p>
       </div>
     </div>
   </div>
@@ -45,7 +46,7 @@ p {
   margin: 0;
 }
 
-.wrapper {
+.easy-input-wrapper {
   position: relative;
   width: 100%;
   padding: 1em 0;
@@ -55,13 +56,13 @@ p {
   align-items: center;
 }
 
-.title-wrapper {
+.input-title-wrapper {
   width: 100%;
   text-align: left;
   padding-bottom: 0.5em;
 }
 
-.input-wrapper {
+.input-input-wrapper {
   position: relative;
   width: 100%;
   display: flex;
@@ -69,7 +70,7 @@ p {
   align-items: center;
 }
 
-input {
+.input-input {
   width: 100%;
   font-family: "Source Code Pro", monospace;
   font-size: min(1em, 3vw);
@@ -78,12 +79,12 @@ input {
   outline: none;
 }
 
-input:hover,
-input:focus {
+.input-input:hover,
+.input-input:focus {
   border-bottom-color: #ffc239;
 }
 
-.clear-wrapper {
+.input-clear-wrapper {
   position: absolute;
   height: calc(100% - 2px);
   padding: 0 0.1em;
@@ -95,7 +96,7 @@ input:focus {
   background-color: white;
 }
 
-.clear-btn {
+.input-clear {
   font-family: "Comfortaa", cursive;
   font-weight: 500;
   user-select: none;
@@ -107,7 +108,7 @@ input:focus {
   transition: all 0.2s ease;
 }
 
-.clear-btn:hover {
+.input-clear:hover {
   color: #ffc239;
 }
 </style>

@@ -1,12 +1,20 @@
 <template lang="html">
-  <div class="container-xl">
-    <nav class="navbar">
-      <p class="navbar-brand xs-font link" @click="toHome">На главную</p>
-      <p class="navbar-brand xs-font">{{ $store.state.user }}</p>
-    </nav>
+  <div class="qrs-bg"></div>
 
-    <div class="title-wrapper">
-      <h2 class="title lg-font">Ваши QR коды</h2>
+  <div class="container-fluid qrs-navbar-wrapper">
+    <div class="container-xl">
+      <nav class="navbar">
+        <p class="navbar-brand xs-font qrs-navbar-link" @click="toHome">
+          На главную
+        </p>
+        <p class="navbar-brand xs-font">{{ $store.state.user }}</p>
+      </nav>
+    </div>
+  </div>
+
+  <div class="container-xl">
+    <div class="qrs-title-wrapper">
+      <h2 class="lg-font">Ваши QR коды</h2>
       <p class="xs-font">Здесь вы можете:</p>
       <ul>
         <li class="xs-font">
@@ -22,7 +30,7 @@
       </ul>
     </div>
 
-    <div class="maker-wrapper">
+    <div class="qrs-maker-wrapper">
       <qr-maker></qr-maker>
     </div>
 
@@ -58,7 +66,15 @@
           :aria-labelledby="`heading-${qr.id}`"
         >
           <div class="accordion-body">
-            <qr-card :qrId="qr.id"></qr-card>
+            <qr-card
+              :id="qr.id"
+              :name="qr.name"
+              :url="qr.url"
+              :nextUrl="qr.nextUrl"
+              :nextUrlTime="qr.nextUrlTime"
+              :entries="qr.entries"
+              :getImage="qr.getImage"
+            ></qr-card>
           </div>
         </div>
       </div>
@@ -69,9 +85,13 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import store from "@/store";
+import QrCard from "@/components/QrCard.vue";
+import QrMaker from "@/components/QrMaker.vue";
 
 export default defineComponent({
   name: "qrs-page",
+
+  components: { QrCard, QrMaker },
 
   methods: {
     toHome() {
@@ -86,27 +106,54 @@ export default defineComponent({
 </script>
 
 <style lang="css" scoped>
-.link {
+body {
+  padding-bottom: 3em;
+}
+
+.qrs-bg {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  background-color: #f1f1f1;
+  background-image: url("@/assets/bg++.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 0.5;
+}
+
+.qrs-navbar-wrapper {
+  background-color: white;
+}
+
+.qrs-navbar-link {
   text-decoration: none;
-  transition: all 0.3s ease-in-out;
   cursor: pointer;
 }
 
-.link:hover {
+.qrs-navbar-link:hover {
   text-decoration: underline;
 }
 
-.title-wrapper {
+.qrs-title-wrapper {
   width: 94%;
-  margin: 0 3%;
+  padding: 0 3%;
+  margin: 3em 3%;
   height: 50vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  background-color: white;
+  border-radius: 0.4em;
+  border: 1px solid lightgray;
 }
 
-.maker-wrapper {
-  margin-bottom: 2em;
+.qrs-maker-wrapper {
+  width: 94%;
+  padding: 0 3%;
+  margin: 3em 3%;
 }
 </style>

@@ -1,10 +1,10 @@
 <template lang="html">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-3 img-wrapper">
-        <img :src="getImage" class="qr-img" />
-        <p class="entries xs-font">Переходов по этому QR: {{ entries }}</p>
-        <div class="qr-tools">
+      <div class="col-md-3 card-img-wrapper">
+        <img :src="getImage" class="card-img" />
+        <p class="card-entries xs-font">Переходов по этому QR: {{ entries }}</p>
+        <div class="card-tools">
           <div class="quad-cont-sm">
             <easy-button
               :iconName="'download'"
@@ -21,35 +21,37 @@
         </div>
       </div>
 
-      <div class="col-md-9 data-wrapper">
-        <div class="input-wrapper">
+      <div class="col-md-9 card-data-wrapper">
+        <div class="card-input-wrapper">
           <easy-input
-            v-model="name"
+            v-model="inputName"
             :placeholder="'Например: QR для рекламной рассылки'"
             >Название QR кода
           </easy-input>
         </div>
-        <div class="input-wrapper">
-          <easy-input v-model="url" :placeholder="'Например: univer.dvfu.ru'"
+        <div class="card-input-wrapper">
+          <easy-input
+            v-model="inputUrl"
+            :placeholder="'Например: univer.dvfu.ru'"
             >Ссылка, по которой QR будет перенаправлять
           </easy-input>
         </div>
-        <div class="input-wrapper">
+        <div class="card-input-wrapper">
           <easy-input
-            v-model="nextUrl"
+            v-model="inputNextUrl"
             :placeholder="'Например: github.io/the-makcym/qr'"
             >По этой ссылке QR код будет перенаправлять после указанного времени
           </easy-input>
         </div>
-        <div class="input-wrapper">
+        <div class="card-input-wrapper">
           <easy-input
-            v-model="nextUrlTime"
+            v-model="inputNextUrlTime"
             :placeholder="'Например: 2012-12-31 17:59'"
             >Время для вышеуказанной ссылки
           </easy-input>
         </div>
 
-        <div class="btns-wrapper">
+        <div class="card-btns-wrapper">
           <div class="quad-cont-md">
             <easy-button
               :iconName="'thunder'"
@@ -78,50 +80,53 @@
 import { defineComponent } from "vue";
 import store from "@/store";
 import axios from "axios";
-import { file } from "@babel/types";
 
 export default defineComponent({
   name: "qr-card",
 
   data() {
     return {
-      index: 0,
-      name: "",
-      url: "",
-      nextUrl: "",
-      nextUrlTime: "",
-      entries: 0,
-      getImage: "",
+      inputName: "",
+      inputUrl: "",
+      inputNextUrl: "",
+      inputNextUrlTime: "",
     };
   },
 
   props: {
-    qrId: {
+    id: {
       type: String,
+    },
+    name: {
+      type: String,
+      default: "",
+    },
+    url: {
+      type: String,
+      default: "",
+    },
+    nextUrl: {
+      type: String,
+      default: "",
+    },
+    nextUrlTime: {
+      type: String,
+      default: "",
+    },
+    entries: {
+      type: Number,
+      default: 0,
+    },
+    getImage: {
+      type: String,
+      default: "",
     },
   },
 
   methods: {
-    // MOVE TO STORE GETTERS
-    updateFromStore() {
-      this.index = 0;
-      for (let qr of store.state.qrs) {
-        if (qr.id == this.qrId) {
-          this.name = qr.name;
-          this.url = qr.url;
-          this.nextUrl = qr.next_url;
-          this.nextUrlTime = qr.next_url_time;
-          this.entries = qr.entries;
-          this.getImage = qr.get_image;
-          break;
-        }
-        this.index++;
-      }
-    },
-
     updateQr() {
       store.dispatch("updateQr", {
-        id: this.qrId,
+        id: this.id,
         name: this.name.trim(),
         url: this.url.trim(),
         next_url: this.nextUrl.trim(),
@@ -130,7 +135,7 @@ export default defineComponent({
     },
 
     deleteQr() {
-      store.dispatch("deleteQr", this.qrId);
+      store.dispatch("deleteQr", this.id);
     },
 
     downloadImg() {
@@ -143,7 +148,7 @@ export default defineComponent({
         let fileLink = document.createElement("a");
         fileLink.href = fileUrl;
 
-        fileLink.setAttribute("download", `qr_${this.qrId}.svg`);
+        fileLink.setAttribute("download", `qr_${this.id}.svg`);
         document.body.appendChild(fileLink);
         fileLink.click();
       });
@@ -155,26 +160,50 @@ export default defineComponent({
   },
 
   mounted() {
-    this.updateFromStore();
+    this.inputName = this.name;
+    this.inputUrl = this.url;
+    this.inputNextUrl = this.nextUrl;
+    this.inputNextUrlTime = this.nextUrlTime;
+  },
+
+  watch: {
+    name: function (newVal, oldVal) {
+      this.inputName = this.name;
+    },
+    url: function (newVal, oldVal) {
+      this.inputUrl = this.url;
+    },
+    nextUrl: function (newVal, oldVal) {
+      this.inputNextUrl = this.nextUrl;
+    },
+    nextUrlTime: function (newVal, oldVal) {
+      this.inputNextUrlTime = this.nextUrlTime;
+    },
   },
 });
 </script>
 
 <style lang="css" scoped>
-.img-wrapper {
+.card-img-wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.qr-img {
+.card-img {
   width: 80%;
   max-width: 40vw;
   padding: 1em;
 }
 
-.qr-tools {
+.card-entries {
+  padding-top: 1em;
+  font-family: "Comfortaa", cursive;
+  font-weight: 500;
+}
+
+.card-tools {
   width: 90%;
   display: flex;
   flex-direction: row;
@@ -182,25 +211,19 @@ export default defineComponent({
   align-items: center;
 }
 
-.entries {
-  padding-top: 1em;
-  font-family: "Comfortaa", cursive;
-  font-weight: 500;
-}
-
-.data-wrapper {
+.card-data-wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.input-wrapper {
+.card-input-wrapper {
   width: 90%;
   margin: 0.5em;
 }
 
-.btns-wrapper {
+.card-btns-wrapper {
   width: 90%;
   margin: 0.5em;
   display: flex;

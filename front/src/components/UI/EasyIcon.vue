@@ -1,9 +1,16 @@
 <template lang="html">
-  <div class="container">
-    <div v-for="icon in icons" :key="icon.name" class="filler">
-      <div v-if="iconName == icon.name" class="filler wrapper">
-        <img :src="icon.src" class="icon" />
-      </div>
+  <div class="easy-icon-wrapper">
+    <div v-if="iconName == 'code'" class="icon-icon-wrapper">
+      <img src="@/assets/icons/code.svg" class="icon-icon" />
+    </div>
+    <div v-if="iconName == 'download'" class="icon-icon-wrapper">
+      <img src="@/assets/icons/download.svg" class="icon-icon" />
+    </div>
+    <div v-if="iconName == 'thunder'" class="icon-icon-wrapper">
+      <img src="@/assets/icons/thunder.svg" class="icon-icon" />
+    </div>
+    <div v-if="iconName == 'trash'" class="icon-icon-wrapper">
+      <img src="@/assets/icons/trash.svg" class="icon-icon" />
     </div>
   </div>
 </template>
@@ -13,23 +20,6 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "easy-icon",
-
-  data() {
-    return {
-      icons: [
-        { name: "calendar", src: require("@/assets/icons/calendar.svg") },
-        { name: "code", src: require("@/assets/icons/code.svg") },
-        { name: "copy", src: require("@/assets/icons/copy.svg") },
-        { name: "download", src: require("@/assets/icons/download.svg") },
-        { name: "empty_name", src: require("@/assets/icons/empty_name.svg") },
-        { name: "link", src: require("@/assets/icons/link.svg") },
-        { name: "setted_name", src: require("@/assets/icons/setted_name.svg") },
-        { name: "stat", src: require("@/assets/icons/stat.svg") },
-        { name: "thunder", src: require("@/assets/icons/thunder.svg") },
-        { name: "trash", src: require("@/assets/icons/trash.svg") },
-      ],
-    };
-  },
 
   props: {
     iconName: {
@@ -41,22 +31,14 @@ export default defineComponent({
 </script>
 
 <style lang="css" scoped>
-.container {
+.easy-icon-wrapper {
   user-select: none;
   position: relative;
   width: 100%;
   height: 100%;
 }
 
-.filler {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-}
-
-.wrapper {
+.icon-icon-wrapper {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -67,7 +49,7 @@ export default defineComponent({
   align-items: center;
 }
 
-.icon {
+.icon-icon {
   width: 60%;
   max-width: 60%;
   height: 60%;

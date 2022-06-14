@@ -3,13 +3,13 @@
     @click="$emit('clicked')"
     @mouseover="explanationVisible = true"
     @mouseleave="explanationVisible = false"
-    class="wrapper"
+    class="easy-button-wrapper"
   >
-    <div ref="quad" class="quad">
+    <div ref="quad" class="btn-icon-wrapper">
       <easy-icon :iconName="iconName"></easy-icon>
     </div>
-    <div v-if="explanationVisible && desc" class="explanation-wrapper">
-      <p class="explanation">
+    <div v-if="explanationVisible && desc" class="btn-explanation-wrapper">
+      <p class="btn-explanation">
         <slot></slot>
       </p>
     </div>
@@ -59,14 +59,14 @@ p {
   line-height: min(1.1em, 2.5vw);
 }
 
-.wrapper {
+.easy-button-wrapper {
   position: relative;
   user-select: none;
   width: 100%;
   height: 100%;
 }
 
-.quad {
+.btn-icon-wrapper {
   width: 100%;
   height: 100%;
   display: flex;
@@ -76,28 +76,28 @@ p {
   transition: all 0.3s ease-in-out;
 }
 
-.quad.gray {
+.btn-icon-wrapper.gray {
   background-color: rgb(230, 230, 230);
 }
-.quad.gray:hover {
+.btn-icon-wrapper.gray:hover {
   background-color: #ffc239;
 }
 
-.quad.red {
+.btn-icon-wrapper.red {
   background-color: #ffc239;
 }
-.quad.red:hover {
+.btn-icon-wrapper.red:hover {
   opacity: 0.7;
 }
 
-.quad.green {
+.btn-icon-wrapper.green {
   background-color: #b3ef33;
 }
-.quad.green:hover {
+.btn-icon-wrapper.green:hover {
   opacity: 0.7;
 }
 
-.explanation-wrapper {
+.btn-explanation-wrapper {
   position: absolute;
   width: 160%;
   top: calc(100% + 8px);
@@ -109,7 +109,7 @@ p {
   align-items: center;
 }
 
-.explanation-wrapper:before {
+.btn-explanation-wrapper:before {
   content: "";
   border-style: solid;
   border-width: 0 6px 8px 6px;
@@ -119,7 +119,7 @@ p {
   left: calc(50% - 6px);
 }
 
-.explanation {
+.btn-explanation {
   font-family: "Comfortaa", cursive;
   font-weight: 500;
   user-select: none;

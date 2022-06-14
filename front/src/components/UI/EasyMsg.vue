@@ -1,7 +1,7 @@
 <template lang="html">
   <Transition name="slide-fade">
-    <div v-if="visible" class="wrapper">
-      <p>{{ msgData }}</p>
+    <div v-if="visible" class="easy-msg-wrapper">
+      <p class="msg-text xs-font">{{ msgData }}</p>
     </div>
   </Transition>
 </template>
@@ -53,7 +53,7 @@ export default defineComponent({
 </script>
 
 <style lang="css" scoped>
-.wrapper {
+.easy-msg-wrapper {
   position: fixed;
   max-width: 20%;
   max-height: 10%;
@@ -68,12 +68,11 @@ export default defineComponent({
   align-items: center;
 }
 
-p {
+.msg-text {
   margin: 0;
   padding: 0.4em 0.7em;
   text-decoration: none;
   font-family: "Quicksand", sans-serif;
-  font-size: 0.9em;
 }
 
 .slide-fade-enter-active {

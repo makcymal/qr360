@@ -239,9 +239,12 @@ export default createStore({
     },
 
     updateDemoQr({ state }, qrUrl) {
-      if (qrUrl == "") {
+      if (!isUrlValid(qrUrl)) {
+        state.msg = "Введите корректную ссылку";
+        state.msgTime = Date.now();
         return;
       }
+
       axios
         .put(state.api + "qr", { hash: "demo", id: state.demoQrId, url: qrUrl })
         .then(function (response) {

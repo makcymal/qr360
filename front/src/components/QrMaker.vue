@@ -1,5 +1,5 @@
 <template lang="html">
-  <p style="text-align: right">
+  <p class="maker-toggler">
     <button
       class="btn btn-warning"
       type="button"
@@ -12,21 +12,21 @@
     </button>
   </p>
   <div class="collapse" id="makerForm">
-    <div class="card card-body data-wrapper">
-      <div class="input-wrapper">
+    <div class="card card-body maker-data-wrapper">
+      <div class="maker-input-wrapper">
         <easy-input
           v-model="name"
           :placeholder="'Например: QR для рекламной рассылки'"
           >Название QR кода
         </easy-input>
       </div>
-      <div class="input-wrapper">
+      <div class="maker-input-wrapper">
         <easy-input v-model="url" :placeholder="'Например: univer.dvfu.ru'"
           >Ссылка, по которой QR будет перенаправлять
         </easy-input>
       </div>
 
-      <div class="btns-wrapper">
+      <div class="maker-btns-wrapper">
         <div class="quad-cont-md">
           <easy-button
             :iconName="'thunder'"
@@ -69,19 +69,23 @@ export default defineComponent({
 </script>
 
 <style lang="css" scoped>
-.data-wrapper {
+.maker-toggler {
+  text-align: right;
+}
+
+.maker-data-wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.input-wrapper {
+.maker-input-wrapper {
   width: 90%;
   margin: 0.5em;
 }
 
-.btns-wrapper {
+.maker-btns-wrapper {
   width: 90%;
   margin: 0.5em;
   display: flex;

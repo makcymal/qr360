@@ -1,5 +1,5 @@
 <template lang="html">
-  <home-page v-if="!$store.state.onHome"></home-page>
+  <home-page v-if="$store.state.onHome"></home-page>
   <qrs-page v-else></qrs-page>
   <easy-msg :msg="$store.state.msg" :msgTime="$store.state.msgTime"></easy-msg>
 </template>
@@ -8,9 +8,17 @@
 import { defineComponent } from "vue";
 import HomePage from "@/pages/HomePage.vue";
 import QrsPage from "@/pages/QrsPage.vue";
+import store from "./store";
 
 export default defineComponent({
   components: { HomePage, QrsPage },
+
+  mounted() {
+    if (store.state.demoQrImage == "") {
+      store.dispatch("createDemoQr");
+    }
+    store.state.qrs = [];
+  },
 });
 </script>
 

@@ -22,7 +22,6 @@ from .tasks import update_url
 AppView = never_cache(TemplateView.as_view(template_name='index.html'))
 
 
-# works
 def check_string(data):
     secret = hashlib.sha256()
     secret.update(settings.TGBOT.encode('utf-8'))
@@ -35,7 +34,6 @@ def check_string(data):
     return False
 
 
-# works
 class StartSession(APIView):
     def post(self, request):
         try:
@@ -53,7 +51,6 @@ class StartSession(APIView):
             return Response({'success': False})
 
 
-# works
 class AllQrs(APIView):
     def get(self, request):
         try:
@@ -65,7 +62,6 @@ class AllQrs(APIView):
             return Response({'success': False})
 
 
-# works
 class ManageQr(APIView):
     def get(self, request):
         try:
@@ -103,7 +99,6 @@ class ManageQr(APIView):
         return Response({'success': True, 'qr': QrSerializer(qr).data})
 
 
-    # ЗАМЕНИТЬ QUERY_PARAMS НА DATA
     def put(self, request):
         try:
             sess_hash = request.data['hash']
@@ -157,7 +152,6 @@ class ManageQr(APIView):
             return Response({'success': False})
 
 
-# works
 def Redirect(request, qr_id):
     try:
         qr = QrCode.objects.get(pk=qr_id)
