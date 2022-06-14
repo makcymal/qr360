@@ -54,11 +54,12 @@ export default defineComponent({
 
 <style lang="css" scoped>
 .wrapper {
-  position: absolute;
+  position: fixed;
   max-width: 20%;
   max-height: 10%;
   top: 0.5em;
   right: 0.5em;
+  z-index: 100000;
   background-color: rgb(230, 230, 230);
   border-radius: 0.5em;
   display: flex;

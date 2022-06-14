@@ -1,5 +1,5 @@
 <template lang="html">
-  <home-page v-if="$store.state.isAuth"></home-page>
+  <home-page v-if="!$store.state.onHome"></home-page>
   <qrs-page v-else></qrs-page>
   <easy-msg :msg="$store.state.msg" :msgTime="$store.state.msgTime"></easy-msg>
 </template>
@@ -15,7 +15,7 @@ export default defineComponent({
 </script>
 
 <style lang="css">
-@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@500&family=Source+Code+Pro&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@500&family=Source+Code+Pro&display=swap");
 
 body {
   margin: 0;
@@ -36,10 +36,18 @@ h5,
 h6,
 p,
 a,
-button {
+button,
+li {
   padding: 0;
+  margin: 0 0 0.3em 0;
   text-decoration: none;
-  font-family: "Quicksand", sans-serif;
+  font-family: "Comfortaa", cursive;
+  font-weight: 500;
+  font-size: 1em;
+}
+
+.bold {
+  font-weight: 600;
 }
 
 .xl-font {
@@ -56,5 +64,21 @@ button {
 }
 .xs-font {
   font-size: min(1em, 3vw);
+}
+
+.quad-cont-sm {
+  width: 2em;
+  height: 2em;
+  margin: 0.3em;
+}
+.quad-cont-md {
+  width: 2.5em;
+  height: 2.5em;
+  margin: 0.5em;
+}
+.quad-cont-lg {
+  width: 3em;
+  height: 3em;
+  margin: 0.8em;
 }
 </style>

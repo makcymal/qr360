@@ -26,6 +26,7 @@ export default defineComponent({
         { name: "setted_name", src: require("@/assets/icons/setted_name.svg") },
         { name: "stat", src: require("@/assets/icons/stat.svg") },
         { name: "thunder", src: require("@/assets/icons/thunder.svg") },
+        { name: "trash", src: require("@/assets/icons/trash.svg") },
       ],
     };
   },
@@ -67,9 +68,9 @@ export default defineComponent({
 }
 
 .icon {
-  width: 65%;
-  max-width: 65%;
-  height: 65%;
-  max-height: 65%;
+  width: 60%;
+  max-width: 60%;
+  height: 60%;
+  max-height: 60%;
 }
 </style>

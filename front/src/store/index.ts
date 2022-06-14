@@ -1,5 +1,6 @@
 import { createStore } from "vuex";
 import axios from "axios";
+import { isUrlValid, timeTo } from "./storeTools";
 
 // tg auth validated data example:
 // first_name: Максим
@@ -12,19 +13,30 @@ import axios from "axios";
 
 export default createStore({
   state: {
-    isAuth: false,
+    onHome: true,
     sessionHash: "",
-    user: Object,
+    user: "the-makcym",
     api: "http://localhost:8000/api/",
     qrs: [
       {
         id: "0",
-        name: "abeba",
+        name: "",
         url: "aboba.ru",
         next_url: "",
-        next_url_time: "2022-10-12 12:30",
+        next_url_time: "",
+        entries: 127,
+        get_image: "",
+        edit_time: 2,
+      },
+      {
+        id: "1",
+        name: "jopa",
+        url: "bebra.ru",
+        next_url: "dvfu.ru",
+        next_url_time: "2010-12-31 23.59",
         entries: 0,
         get_image: "",
+        edit_time: 1,
       },
     ],
 
@@ -37,8 +49,11 @@ export default createStore({
 
   actions: {
     onAuth({ state, dispatch }, user) {
-      state.isAuth = true;
-      state.user = user;
+      state.onHome = false;
+      if (user.first_name != "") {
+        state.user += user.first_name;
+        if (user.last_name != "") state.user += " " + user.last_name;
+      } else if (user.username != "") state.user += user.username;
 
       axios
         .post(state.api + "s", user)
@@ -65,6 +80,7 @@ export default createStore({
         .then(function (response) {
           if (response.data.success) {
             state.qrs = response.data.qrs;
+            state.qrs.sort((a, b) => a.edit_time - b.edit_time);
           } else {
             state.msg =
               "Не удалось загрузить QR, пожалуйста, перезагрузите страницу";
@@ -104,6 +120,11 @@ export default createStore({
 
     // qr = { url: string, name: string (optional) }
     createQr({ state }, qr) {
+      if (!isUrlValid(qr.url)) {
+        state.msg = "Введите ссылку";
+        state.msgTime = Date.now();
+        return;
+      }
       qr.hash = state.sessionHash;
       axios
         .post(state.api + "qr", qr)
@@ -128,6 +149,15 @@ export default createStore({
     // qr = { id: number, url: string (optional), name: string (optional) }
     updateQr({ state }, qr) {
       qr.hash = state.sessionHash;
+      qr.edit_time = Date.now();
+
+      qr.count = timeTo(qr.next_url_time);
+      if (qr.count <= 0) {
+        state.msg = "Укажите правильные дату и время";
+        state.msgTime = Date.now();
+        return;
+      }
+
       axios
         .put(state.api + "qr", qr)
         .then(function (response) {

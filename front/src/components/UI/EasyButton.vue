@@ -5,7 +5,7 @@
     @mouseleave="explanationVisible = false"
     class="wrapper"
   >
-    <div class="icon-wrapper">
+    <div ref="quad" class="quad">
       <easy-icon :iconName="iconName"></easy-icon>
     </div>
     <div v-if="explanationVisible && desc" class="explanation-wrapper">
@@ -16,7 +16,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="js">
 import { defineComponent } from "vue";
 
 export default defineComponent({
@@ -37,6 +37,14 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    style: {
+      type: String,
+      default: "gray",
+    },
+  },
+
+  mounted() {
+    this.$refs.quad.classList.add(this.style);
   },
 });
 </script>
@@ -58,19 +66,35 @@ p {
   height: 100%;
 }
 
-.icon-wrapper {
+.quad {
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(230, 230, 230);
   border-radius: 0.5em;
   transition: all 0.3s ease-in-out;
 }
 
-.icon-wrapper:hover {
+.quad.gray {
+  background-color: rgb(230, 230, 230);
+}
+.quad.gray:hover {
   background-color: #ffc239;
+}
+
+.quad.red {
+  background-color: #ffc239;
+}
+.quad.red:hover {
+  opacity: 0.7;
+}
+
+.quad.green {
+  background-color: #b3ef33;
+}
+.quad.green:hover {
+  opacity: 0.7;
 }
 
 .explanation-wrapper {
@@ -96,6 +120,8 @@ p {
 }
 
 .explanation {
+  font-family: "Comfortaa", cursive;
+  font-weight: 500;
   user-select: none;
   background-color: rgb(230, 230, 230);
   margin: 0;

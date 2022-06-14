@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="wrapper">
     <div class="title-wrapper">
-      <p class="title">
+      <p class="title xs-font bold">
         <slot></slot>
       </p>
     </div>
@@ -40,9 +40,15 @@ export default defineComponent({
 </script>
 
 <style lang="css" scoped>
+p {
+  padding: 0;
+  margin: 0;
+}
+
 .wrapper {
   position: relative;
   width: 100%;
+  padding: 1em 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -52,6 +58,7 @@ export default defineComponent({
 .title-wrapper {
   width: 100%;
   text-align: left;
+  padding-bottom: 0.5em;
 }
 
 .input-wrapper {
@@ -78,14 +85,19 @@ input:focus {
 
 .clear-wrapper {
   position: absolute;
+  height: calc(100% - 2px);
+  padding: 0 0.1em;
   top: 0;
   right: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: white;
 }
 
 .clear-btn {
+  font-family: "Comfortaa", cursive;
+  font-weight: 500;
   user-select: none;
   padding: 0 0.2em;
   margin: 0;
