@@ -41,7 +41,7 @@ class QrCode(models.Model):
             border=4,
         )
 
-        img = qrcode.make(settings.PROD_HOST + 'redirect/' + str(self.id) + '/',
+        img = qrcode.make(settings.PROD_HOST + 'redirect/' + str(self.id),
                           image_factory=qrcode.image.svg.SvgPathImage)
 
         bytesIO = BytesIO(img.to_string())

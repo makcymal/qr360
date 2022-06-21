@@ -8,24 +8,17 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 sys.path.insert(0, PROJECT_DIR)
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = os.environ.get('SECRET_KEY')
-SECRET_KEY = 'django-insecure-v%n%urhg#$3i9ofm-6-6_dgy@r=sk^dnz2fft(=$nc0x+-usl1'
+SECRET_KEY = os.environ.get('SECRET_KEY', default='django-insecure-v%n%urhg#$3i9ofm-6-6_dgy@r=sk^dnz2fft(=$nc0x+-usl1')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = int(os.environ.get('DEBUG', default=0))
-DEBUG = True
+DEBUG = int(os.environ.get('DEBUG', default=1))
 
-# Our production host, this or 'qr360.tk/' or any else
-PROD_HOST = 'kchaw.ru/'
+PROD_HOST = ''
 
-# ALLOWED_HOSTS = []
-# if os.environ.get('DJANGO_ALLOWED_HOSTS') is not None:
-#     ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS').split(' ')
 ALLOWED_HOSTS = ['*']
+if os.environ.get('DJANGO_ALLOWED_HOSTS') is not None:
+    ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS').split(' ')
 
 
 # Application definition
@@ -79,23 +72,23 @@ WSGI_APPLICATION = 'back.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'back', 'db.sqlite3'),
-    }
-}
-
 # DATABASES = {
-#     "default": {
-#         "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
-#         "NAME": os.environ.get("SQL_DATABASE", os.path.join(BASE_DIR, "db.sqlite3")),
-#         "USER": os.environ.get("SQL_USER", "user"),
-#         "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
-#         "HOST": os.environ.get("SQL_HOST", "localhost"),
-#         "PORT": os.environ.get("SQL_PORT", "5432"),
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'back', 'db.sqlite3'),
 #     }
 # }
+
+DATABASES = {
+    "default": {
+        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
+        "NAME": os.environ.get("SQL_DATABASE", os.path.join(BASE_DIR, "db.sqlite3")),
+        "USER": os.environ.get("SQL_USER", "user"),
+        "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
+        "HOST": os.environ.get("SQL_HOST", "localhost"),
+        "PORT": os.environ.get("SQL_PORT", "5432"),
+    }
+}
 
 
 # Password validation
@@ -159,32 +152,21 @@ REST_FRAMEWORK = {
     # API responses renderers   
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
-        # disable in prod
-        'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
     ]
 }
 
 
 # access to API from different source
-CORS_ALLOWED_ORIGINS = [
-    # vue dev server
-    'http://0.0.0.0:8000',
-    'http://localhost:3000',
-    'http://localhost:8000',
-    'http://localhost:8080',
-    'http://kchaw.ru',
-    'https://kchaw.ru',
-    'http://qr360.tk',
-    'https://qr360.tk',
-]
+CORS_ALLOWED_ORIGINS = []
 
 
-# CELERY_BROKER_URL = os.environ.get('CELERY_BROKER')
-# CELERY_RESULT_BACKEND = os.environ.get('CELERY_BACKEND')
-CELERY_BROKER_URL = "redis://redis:6379"
-CELERY_RESULT_BACKEND = "redis://redis:6379"
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER', default="redis://redis:6379")
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_BACKEND', default="redis://redis:6379")
 CELERY_TIMEZONE = "Asia/Vladivostok"
 
 
 # telegram bot secret key for auth
-TGBOT = '5195521399:AAHCKGLCVmrQ19xQ5g6hSL5SqPQfXQvSbpg'
+TGBOT = os.environ.get('TGBOT', default="5195521399:AAHCKGLCVmrQ19xQ5g6hSL5SqPQfXQvSbpg")

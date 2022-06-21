@@ -25,6 +25,10 @@ POSTGRES_USER=user
 POSTGRES_PASSWORD=password
 POSTGRES_DB=postgresql
 
+CELERY_BROKER=redis://redis:6379
+CELERY_BACKEND=redis://redis:6379
+TGBOT=<bot_token>
+
 ```
 
 4. build docker
