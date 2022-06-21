@@ -104,7 +104,6 @@ class ManageQr(APIView):
             edit_time = request.data['edit_time']
         except:
             return Response({'success': False})
-        print(request.data)
 
         if (qr.user_id != session.user_id):
             return Response({'success': False})
