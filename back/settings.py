@@ -12,19 +12,11 @@ sys.path.insert(0, PROJECT_DIR)
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = os.environ.get('SECRET_KEY')
 SECRET_KEY = 'django-insecure-v%n%urhg#$3i9ofm-6-6_dgy@r=sk^dnz2fft(=$nc0x+-usl1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = int(os.environ.get('DEBUG', default=0))
-DEBUG = True
+DEBUG = False
 
-# Our production host, this or 'qr360.tk/' or any else
-PROD_HOST = 'kchaw.ru/'
-
-# ALLOWED_HOSTS = []
-# if os.environ.get('DJANGO_ALLOWED_HOSTS') is not None:
-#     ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS').split(' ')
 ALLOWED_HOSTS = ['*']
 
 
@@ -60,7 +52,7 @@ ROOT_URLCONF = 'back.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['front/dist'],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -85,17 +77,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'back', 'db.sqlite3'),
     }
 }
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
-#         "NAME": os.environ.get("SQL_DATABASE", os.path.join(BASE_DIR, "db.sqlite3")),
-#         "USER": os.environ.get("SQL_USER", "user"),
-#         "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
-#         "HOST": os.environ.get("SQL_HOST", "localhost"),
-#         "PORT": os.environ.get("SQL_PORT", "5432"),
-#     }
-# }
 
 
 # Password validation
@@ -129,21 +110,6 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.0/howto/static-files/
-
-MIDDLEWARE_CLASSES = (
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-)
-
-STATIC_URL = 'static/'
-
-# Place static in the same location as webpack build files
-STATIC_ROOT = os.path.join(BASE_DIR, 'front', 'dist', 'static')
-STATICFILES_DIRS = []
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-
 # Saving images on server
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
@@ -156,34 +122,19 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 REST_FRAMEWORK = {
-    # API responses renderers   
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
-        # disable in prod
-        'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
     ]
 }
 
 
 # access to API from different source
 CORS_ALLOWED_ORIGINS = [
-    # vue dev server
-    'http://0.0.0.0:8000',
-    'http://localhost:3000',
-    'http://localhost:8000',
-    'http://localhost:8080',
     'http://kchaw.ru',
-    'https://kchaw.ru',
-    'http://qr360.tk',
-    'https://qr360.tk',
 ]
-
-
-# CELERY_BROKER_URL = os.environ.get('CELERY_BROKER')
-# CELERY_RESULT_BACKEND = os.environ.get('CELERY_BACKEND')
-CELERY_BROKER_URL = "redis://redis:6379"
-CELERY_RESULT_BACKEND = "redis://redis:6379"
-CELERY_TIMEZONE = "Asia/Vladivostok"
 
 
 # telegram bot secret key for auth
