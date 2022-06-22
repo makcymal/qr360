@@ -1,5 +1,4 @@
 from django.db import models
-from django.conf import settings
 from django.core.files.base import ContentFile
 
 from io import BytesIO
@@ -41,7 +40,7 @@ class QrCode(models.Model):
             border=4,
         )
 
-        img = qrcode.make(settings.PROD_HOST + 'redirect/' + str(self.id),
+        img = qrcode.make('http://127.0.0.1:8000/redirect/' + str(self.id),
                           image_factory=qrcode.image.svg.SvgPathImage)
 
         bytesIO = BytesIO(img.to_string())

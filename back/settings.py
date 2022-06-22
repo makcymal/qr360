@@ -12,9 +12,7 @@ sys.path.insert(0, PROJECT_DIR)
 SECRET_KEY = os.environ.get('SECRET_KEY', default='django-insecure-v%n%urhg#$3i9ofm-6-6_dgy@r=sk^dnz2fft(=$nc0x+-usl1')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = int(os.environ.get('DEBUG', default=1))
-
-PROD_HOST = ''
+DEBUG = int(os.environ.get('DEBUG', default=True))
 
 ALLOWED_HOSTS = ['*']
 if os.environ.get('DJANGO_ALLOWED_HOSTS') is not None:
@@ -72,21 +70,10 @@ WSGI_APPLICATION = 'back.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'back', 'db.sqlite3'),
-#     }
-# }
-
 DATABASES = {
-    "default": {
-        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
-        "NAME": os.environ.get("SQL_DATABASE", os.path.join(BASE_DIR, "db.sqlite3")),
-        "USER": os.environ.get("SQL_USER", "user"),
-        "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
-        "HOST": os.environ.get("SQL_HOST", "localhost"),
-        "PORT": os.environ.get("SQL_PORT", "5432"),
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'back', 'db.sqlite3'),
     }
 }
 
@@ -152,15 +139,21 @@ REST_FRAMEWORK = {
     # API responses renderers   
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
-    ]
+    ],
 }
 
 
 # access to API from different source
-CORS_ALLOWED_ORIGINS = []
+CORS_ALLOWED_ORIGINS = [
+    'http://0.0.0.0:8000',
+    'http://localhost:3000',
+    'http://localhost:8000',
+    'http://localhost:8080',
+]
 
 
 CELERY_BROKER_URL = os.environ.get('CELERY_BROKER', default="redis://redis:6379")

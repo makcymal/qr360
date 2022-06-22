@@ -2,15 +2,6 @@ import { createStore } from "vuex";
 import axios from "axios";
 import { isUrlValid, timeTo } from "./storeTools";
 
-// tg auth validated data example:
-// first_name: Максим
-// last_name: undefined
-// username: the_makcym
-// id: 773182128
-// photo_url: https://t.me/i/userpic/320/EoXW_hEei9Ranze9sKjLBFiaifvJo4eLEV8VVXSSN3k.jpg
-// auth_date: 1654601246
-// hash: 3dce944d672e929e9a3a14988668ba8f01c10ca35b75bd0e5f1286f9698880a2
-
 export default createStore({
   state: {
     onHome: true,
@@ -222,6 +213,7 @@ export default createStore({
         .post(state.api + "qr", {
           hash: "demo",
           url: "https://github.com/the-makcym/qr",
+          edit_time: 0,
         })
         .then(function (response) {
           if (response.data.success) {
@@ -246,7 +238,12 @@ export default createStore({
       }
 
       axios
-        .put(state.api + "qr", { hash: "demo", id: state.demoQrId, url: qrUrl })
+        .put(state.api + "qr", {
+          hash: "demo",
+          id: state.demoQrId,
+          url: qrUrl,
+          edit_time: 0,
+        })
         .then(function (response) {
           if (response.data.success) {
             state.msg = "Содержимое QR кода обновлено";

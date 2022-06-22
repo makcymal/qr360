@@ -1,4 +1,5 @@
 export function isUrlValid(url: string): boolean {
+  if (url.length == 0) return true;
   return url.includes(".") && url.length >= 3 && url[url.length - 1] != ".";
 }
 
