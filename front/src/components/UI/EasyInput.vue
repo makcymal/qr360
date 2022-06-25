@@ -1,25 +1,23 @@
 <template lang="html">
-  <div class="wrapper">
-    <div v-if="icon_name" class="icon-wrapper">
-      <easy-icon :icon_name="icon_name"></easy-icon>
+  <div class="easy-input-wrapper">
+    <div class="input-title-wrapper">
+      <p class="xs-font bold">
+        <slot></slot>
+      </p>
     </div>
-    <div class="input-wrapper">
+
+    <div class="input-input-wrapper">
       <input
-        type="text"
+        :type="type"
         spellcheck="false"
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
         :placeholder="placeholder"
+        class="input-input"
       />
-      <div class="clear-wrapper">
-        <p @click="$emit('update:modelValue', '')" class="clear-btn">×</p>
+      <div class="input-clear-wrapper">
+        <p @click="$emit('update:modelValue', '')" class="input-clear">×</p>
       </div>
-    </div>
-    <div v-if="btn_name" class="btn-wrapper">
-      <easy-button
-        :icon_name="btn_name"
-        @clicked="$emit('clicked')"
-      ></easy-button>
     </div>
   </div>
 </template>
@@ -38,42 +36,45 @@ export default defineComponent({
       type: String,
       default: "",
     },
-    icon_name: {
+    type: {
       type: String,
-    },
-    btn_name: {
-      type: String,
+      default: "text",
     },
   },
 });
 </script>
 
 <style lang="css" scoped>
-.wrapper {
+p {
+  padding: 0;
+  margin: 0;
+}
+
+.easy-input-wrapper {
   position: relative;
   width: 100%;
-  height: 100%;
+  padding: 1em 0;
   display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
 }
 
-.icon-wrapper {
-  width: 6%;
-  height: 80%;
+.input-title-wrapper {
+  width: 100%;
+  text-align: left;
+  padding-bottom: 0.5em;
 }
 
-.input-wrapper {
+.input-input-wrapper {
   position: relative;
-  width: 80%;
-  height: 100%;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-input {
+.input-input {
   width: 100%;
   font-family: "Source Code Pro", monospace;
   font-size: min(1em, 3vw);
@@ -82,23 +83,26 @@ input {
   outline: none;
 }
 
-input:hover,
-input:focus {
+.input-input:hover,
+.input-input:focus {
   border-bottom-color: #ffc239;
 }
 
-.clear-wrapper {
+.input-clear-wrapper {
   position: absolute;
+  height: calc(100% - 2px);
+  padding: 0 0.1em;
   top: 0;
   right: 0;
-  height: 100%;
-  background-color: white;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: white;
 }
 
-.clear-btn {
+.input-clear {
+  font-family: "Comfortaa", cursive;
+  font-weight: 500;
   user-select: none;
   padding: 0 0.2em;
   margin: 0;
@@ -108,12 +112,7 @@ input:focus {
   transition: all 0.2s ease;
 }
 
-.clear-btn:hover {
+.input-clear:hover {
   color: #ffc239;
-}
-
-.btn-wrapper {
-  width: 9%;
-  height: 70%;
 }
 </style>

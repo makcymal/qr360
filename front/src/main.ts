@@ -2,6 +2,7 @@ import { createApp } from "vue";
 import App from "@/App.vue";
 import store from "@/store";
 import UI from "@/components/UI";
+import router from "@/router";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -11,4 +12,4 @@ UI.forEach((ui) => {
   app.component(ui.name, ui);
 });
 
-app.use(store).mount("#app");
+app.use(store).use(router).mount("#app");

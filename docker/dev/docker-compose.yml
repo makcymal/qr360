@@ -9,7 +9,7 @@ services:
     ports:
       - "8000:8000"
     volumes: 
-      - ../../back/:/home/app/django/back/
+      - ../../:/home/app/django/
     env_file:
       - ./.env
     command: 
@@ -28,3 +28,22 @@ services:
       - django
     command:
       yarn serve
+
+  redis:
+    image: redis:alpine
+    restart: always
+
+  celery:
+    restart: always
+    build:
+      context: ../../
+      dockerfile: docker/dev/Dockerfile.back
+    command:
+      celery -A back worker -l info
+    volumes:
+      - ../../back/:/home/app/django/back/
+    env_file:
+      - ./.env
+    depends_on:
+      - redis
+      - django

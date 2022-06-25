@@ -3,23 +3,20 @@
     @click="$emit('clicked')"
     @mouseover="explanationVisible = true"
     @mouseleave="explanationVisible = false"
-    class="wrapper"
+    class="easy-button-wrapper"
   >
-    <div class="icon-wrapper">
-      <easy-icon :icon_name="icon_name"></easy-icon>
+    <div ref="quad" class="btn-icon-wrapper">
+      <easy-icon :iconName="iconName"></easy-icon>
     </div>
-    <div
-      v-if="explanationVisible && description != ''"
-      class="explanation-wrapper"
-    >
-      <p class="explanation">
-        {{ description }}
+    <div v-if="explanationVisible && desc" class="btn-explanation-wrapper">
+      <p class="btn-explanation">
+        <slot></slot>
       </p>
     </div>
   </div>
 </template>
 
-<script lang="ts">
+<script lang="js">
 import { defineComponent } from "vue";
 
 export default defineComponent({
@@ -28,28 +25,26 @@ export default defineComponent({
   data() {
     return {
       explanationVisible: false,
-      icons: [
-        { name: "calendar", src: require("@/assets/icons/calendar.svg") },
-        { name: "copy", src: require("@/assets/icons/copy.svg") },
-        { name: "download", src: require("@/assets/icons/download.svg") },
-        { name: "empty_name", src: require("@/assets/icons/empty_name.svg") },
-        { name: "link", src: require("@/assets/icons/link.svg") },
-        { name: "setted_name", src: require("@/assets/icons/setted_name.svg") },
-        { name: "stat", src: require("@/assets/icons/stat.svg") },
-        { name: "thunder", src: require("@/assets/icons/thunder.svg") },
-      ],
     };
   },
 
   props: {
-    icon_name: {
+    iconName: {
       type: String,
       default: "thunder",
     },
-    description: {
-      type: String,
-      default: "",
+    desc: {
+      type: Boolean,
+      default: false,
     },
+    style: {
+      type: String,
+      default: "gray",
+    },
+  },
+
+  mounted() {
+    this.$refs.quad.classList.add(this.style);
   },
 });
 </script>
@@ -64,33 +59,49 @@ p {
   line-height: min(1.1em, 2.5vw);
 }
 
-.wrapper {
+.easy-button-wrapper {
   position: relative;
   user-select: none;
   width: 100%;
   height: 100%;
 }
 
-.icon-wrapper {
+.btn-icon-wrapper {
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(220, 220, 220);
   border-radius: 0.5em;
   transition: all 0.3s ease-in-out;
 }
 
-.icon-wrapper:hover {
+.btn-icon-wrapper.gray {
+  background-color: rgb(230, 230, 230);
+}
+.btn-icon-wrapper.gray:hover {
   background-color: #ffc239;
 }
 
-.explanation-wrapper {
+.btn-icon-wrapper.red {
+  background-color: #ffc239;
+}
+.btn-icon-wrapper.red:hover {
+  opacity: 0.7;
+}
+
+.btn-icon-wrapper.green {
+  background-color: #b3ef33;
+}
+.btn-icon-wrapper.green:hover {
+  opacity: 0.7;
+}
+
+.btn-explanation-wrapper {
   position: absolute;
-  width: 120%;
+  width: 160%;
   top: calc(100% + 8px);
-  left: -10%;
+  left: -30%;
   z-index: 10;
   display: flex;
   flex-direction: column;
@@ -98,19 +109,21 @@ p {
   align-items: center;
 }
 
-.explanation-wrapper:before {
+.btn-explanation-wrapper:before {
   content: "";
   border-style: solid;
   border-width: 0 6px 8px 6px;
-  border-color: transparent transparent rgb(220, 220, 220) transparent;
+  border-color: transparent transparent rgb(230, 230, 230) transparent;
   position: absolute;
   bottom: 100%;
   left: calc(50% - 6px);
 }
 
-.explanation {
+.btn-explanation {
+  font-family: "Comfortaa", cursive;
+  font-weight: 500;
   user-select: none;
-  background-color: rgb(220, 220, 220);
+  background-color: rgb(230, 230, 230);
   margin: 0;
   padding: 0.6em;
   text-align: center;

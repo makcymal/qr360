@@ -10,7 +10,10 @@ services:
       context: ../../
       dockerfile: docker/prod/Dockerfile
     ports:
-      - "8000:8000"
+      - 8000:8000
+    volumes:
+      - ../../front/dist/static/:/home/app/server/front/dist/static
+      - ../../media/:/home/app/server/media
     env_file:
       - ./.env
     command: 
@@ -24,3 +27,22 @@ services:
       - postgres-data:/var/data/db  
     env_file:
       - ./.env
+
+  redis:
+    image: redis:alpine
+    restart: always
+
+  celery:
+    restart: always
+    build:
+      context: ../../
+      dockerfile: docker/dev/Dockerfile.back
+    command:
+      celery -A back worker -l info
+    volumes:
+      - ../../back/:/home/app/django/back/
+    env_file:
+      - ./.env
+    depends_on:
+      - redis
+      - server
