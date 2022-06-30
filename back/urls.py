@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import F
 
-from qr.models import QRModel
+from qr.models import QRModel, DemoQR
 
 
 def Redirect(request, qr_id):
@@ -18,8 +18,17 @@ def Redirect(request, qr_id):
         return HttpResponse('Sorry, an error occuried')
 
 
+def DemoRedirect(request, qr_id):
+    try:
+        qr = DemoQR.objects.get(pk=qr_id)
+        return HttpResponseRedirect('http://' + qr.url)
+    except:
+        return HttpResponse('Sorry, an error occuried')
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('redirect/<int:qr_id>', Redirect),
+    path('redirect/<int:qr_id>/', Redirect),
+    path('demo-redirect/<int:qr_id>/', DemoRedirect),
     path('api/', include('api.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

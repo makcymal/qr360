@@ -170,8 +170,6 @@ CORS_ALLOWED_ORIGINS = [
     'https://api.qr360.tk',
 ]
 
-CORS_ALLOW_CREDENTIALS=True
-
 CORS_ALLOW_HEADERS = [
     "accept",
     "accept-encoding",

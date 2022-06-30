@@ -118,16 +118,6 @@ export default createStore({
           router.push("/qrs");
         })
         .catch(function (error) {
-          // if (error.response) {
-          //   for (const property in error.response.data) {
-          //     state.msg = `${property}: ${error.response.data[property]}`;
-          //     state.msgTime = Date.now();
-          //   }
-          // } else {
-          //   state.msg =
-          //     "При авторизации произошла ошибка, пожалуйста, перезагрузите страницу и попробуйте заново";
-          //   state.msgTime = Date.now();
-          // }
           state.isAuth = false;
           state.token = "";
           axios.defaults.headers.common["Authorization"] = "";

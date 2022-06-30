@@ -12,7 +12,6 @@ class QRList(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        qrs = QRModel.objects.filter(qruser=request.user)
         try:
             qrs = QRModel.objects.filter(qruser=request.user)
             return Response({
@@ -20,7 +19,7 @@ class QRList(APIView):
                 'qrs': QRModelSerializer(qrs, many=True).data
             })
         except:
-            return Response({'success': False})
+            return Response({'success': False, 'error': 'cant get qrs'})
 
     def post(self, request):
         serializer = QRModelSerializer(data=request.data)
@@ -30,9 +29,9 @@ class QRList(APIView):
                 serializer.save(qruser=request.user)
                 return Response({'success': True, 'qr': serializer.data})
             except:
-                return Response({'success': False})
+                return Response({'success': False, 'error': 'cant save qr'})
 
-        return Response({'success': False})
+        return Response({'success': False, 'error': 'data is not valid'})
 
 
 class QRDetail(APIView):
@@ -47,13 +46,13 @@ class QRDetail(APIView):
                 'qr': QRModelSerializer(qr).data
             })
         except:
-            return Response({'success': False})
+            return Response({'success': False, 'error': 'cant get qr'})
 
     def put(self, request, qr_id):
         try:
             qr = QRModel.objects.filter(qruser=request.user).get(pk=qr_id)
         except:
-            return Response({'success': False})
+            return Response({'success': False, 'error': 'cant get qr'})
 
         try:
             timer = request.data['timer']
@@ -75,22 +74,22 @@ class QRDetail(APIView):
                 
                 return Response({'success': True, 'qr': serializer.data})
             except:
-                return Response({'success': False})
+                return Response({'success': False, 'error': 'cant save qr'})
         
-        return Response({'success': False})
+        return Response({'success': False, 'error': 'data is not valid'})
 
     def delete(self, request, qr_id):
         try:
             qr = QRModel.objects.filter(qruser=request.user).get(pk=qr_id)
         except:
-            return Response({'success': False})
+            return Response({'success': False, 'error': 'cant get qr'})
 
         try:
             qr.image.delete(save=True)
             qr.delete()
             return Response({'success': True})
         except:
-            return Response({'success': False})
+            return Response({'success': False, 'error': 'cant delete qr'})
 
 
 class DemoQRManage(APIView):
@@ -103,9 +102,9 @@ class DemoQRManage(APIView):
                 serializer.save()
                 return Response({'success': True, 'qr': serializer.data})
             except:
-                return Response({'success': False})
+                return Response({'success': False, 'error': 'cant save qr'})
 
-        return Response({'success': False})
+        return Response({'success': False, 'error': 'data is not valid'})
 
 
 class DemoQRManageDetail(APIView):
@@ -118,13 +117,13 @@ class DemoQRManageDetail(APIView):
                 'qr': DemoQRSerializer(qr).data,
             })
         except:
-            return Response({'success': False})
+            return Response({'success': False, 'error': 'cant get qr'})
 
     def put(self, request, qr_id):
         try:
             qr = DemoQR.objects.get(pk=qr_id)
         except:
-            return Response({'success': False})
+            return Response({'success': False, 'error': 'cant get qr'})
 
         serializer = DemoQRSerializer(qr, data=request.data)
 
@@ -133,6 +132,6 @@ class DemoQRManageDetail(APIView):
                 serializer.save()
                 return Response({'success': True, 'qr': serializer.data})
             except:
-                return Response({'success': False})
+                return Response({'success': False, 'error': 'cant save qr'})
 
-        return Response({'success': False})
+        return Response({'success': False, 'error': 'data is not valid'})

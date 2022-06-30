@@ -41,6 +41,7 @@ class Recaptcha(APIView):
             recaptcha_response = request.data['recaptchaToken']
             remote_ip = get_remote_ip()
         except:
+            pass
             return Response({'success': False})
 
         params = urlencode({
