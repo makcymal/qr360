@@ -47,16 +47,23 @@ class TelegramAuth(APIView):
             return Response({'success': False})
 
         try:
-            user = QRUser.objects.get(telegram_id=request.data['id'])
-            registered = True
+            user = QRUser.objects.get(username=request.data['id'])
+        except QRUser.DoesNotExist:
+            user = QRUser.objects.create_user(username=request.data['id'])
+        
+        try:
             extra_data = perform_login(request, user)
             token = extra_data['token']
-        except QRUser.DoesNotExist:
-            token = None
-            registered = False
+
+            user.telegram_username = request.data['username']
+            user.photo_url = request.data['photo_url']
+            user.save()
+        except:
+            return Response({'success': False})
 
         return Response({
             'success': True,
-            'registered': registered,
             'token': token,
+            'username': user.telegram_username,
+            'photo_url': user.photo_url,
         })

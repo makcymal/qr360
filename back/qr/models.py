@@ -18,7 +18,7 @@ def get_byte_qrimage(path):
         border=4,
     )
 
-    img = qrcode.make(settings.PROD_HOST + 'redirect/' + path + '/',
+    img = qrcode.make(settings.CURRENT_HOST + '/redirect/' + path + '/',
                       image_factory=qrcode.image.svg.SvgPathImage)
 
     bytesIO = BytesIO(img.to_string())
@@ -53,14 +53,14 @@ class QRModel(models.Model):
 
     def get_image(self):
         if self.image:
-            return 'http://0.0.0.0:8000' + self.image.url
+            return settings.CURRENT_HOST + self.image.url
 
         self.image.save(str(self.id) + '.svg',
                         ContentFile(get_byte_qrimage(str(self.id))),
                         save=False)
         self.save()
 
-        return 'http://0.0.0.0:8000' + self.image.url
+        return settings.CURRENT_HOST + self.image.url
 
 
 class DemoQR(models.Model):
@@ -72,14 +72,14 @@ class DemoQR(models.Model):
 
     def get_image(self):
         if self.image:
-            return 'http://0.0.0.0:8000' + self.image.url
+            return settings.CURRENT_HOST + self.image.url
 
         self.image.save(str(self.id) + '.svg',
-                        ContentFile(get_byte_qrimage(f'demo/{self.id}')),
+                        ContentFile(get_byte_qrimage(f'/demo/{self.id}')),
                         save=False)
         self.save()
 
-        return 'http://0.0.0.0:8000' + self.image.url
+        return settings.CURRENT_HOST + self.image.url
     
     def __str__(self):
         return str(self.id)

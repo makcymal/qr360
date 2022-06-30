@@ -10,9 +10,9 @@ services:
       context: ../../
       dockerfile: docker/prod/Dockerfile
     ports:
-      - 8000:8000
+      - "8000:8000"
     volumes:
-      - ../../front/dist/static/:/home/app/server/front/dist/static
+      - ../../static/:/home/app/server/static
       - ../../media/:/home/app/server/media
     env_file:
       - ./.env

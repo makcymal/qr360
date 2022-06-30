@@ -4,8 +4,6 @@ import store from "@/store";
 
 import HomePage from "@/pages/HomePage.vue";
 import QrsPage from "@/pages/QrsPage.vue";
-import CompleteAuth from "@/pages/CompleteAuth.vue";
-import LogIn from "@/pages/LogIn.vue";
 
 const routes = [
   {
@@ -21,16 +19,6 @@ const routes = [
       requireLogin: true,
     },
   },
-  {
-    path: "/complete",
-    name: "CompleteAuth",
-    component: CompleteAuth,
-  },
-  {
-    path: "/login",
-    name: "LogIn",
-    component: LogIn,
-  },
 ];
 
 const router = createRouter({
@@ -43,7 +31,7 @@ router.beforeEach((to, from, next) => {
     to.matched.some((record) => record.meta.requireLogin) &&
     !store.state.isAuth
   ) {
-    next({ name: "LogIn", query: { to: to.path } });
+    next({ name: "Home", query: { to: to.path } });
   } else {
     next();
   }

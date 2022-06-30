@@ -34,7 +34,7 @@ RECAPTCHA_SECRET_KEY=change_me
 
 TELEGRAM_BOT_TOKEN=change_me
 
-PROD_HOST=qr360.tk
+CURRENT_HOST=https://qr360.tk/
 ```
 
 4. build docker

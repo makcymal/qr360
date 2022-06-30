@@ -13,9 +13,6 @@ import router from "@/router";
 export default defineComponent({
   beforeCreate() {
     store.dispatch("initApp");
-    if (store.state.isAuth) {
-      router.push("/qrs");
-    }
   },
 });
 </script>

@@ -29,7 +29,6 @@ export default createStore({
       auth_date: "",
       hash: "",
     },
-    api: "http://0.0.0.0:8000/api/",
     qrs: [
       {
         id: "",
@@ -67,20 +66,17 @@ export default createStore({
       }
     },
 
-    onAuth({ state, commit, dispatch }, user: any) {
+    onAuth({ state, commit }, user: any) {
       axios
-        .post(state.api + "users/telegram-auth/", user)
+        .post("api/users/telegram-auth/", user)
         .then(function (response) {
           if (response.data.success) {
             state.telegramUser = user;
-            if (response.data.registered) {
-              state.isAuth = true;
-              commit("setToken", response.data.token);
-              dispatch("getProfile");
-              router.push("/qrs");
-            } else {
-              router.push("/complete");
-            }
+            state.isAuth = true;
+            commit("setToken", response.data.token);
+            state.user.username = response.data.username;
+            state.user.photo_url = response.data.photo_url;
+            router.push("/qrs");
           } else {
             state.msg =
               "При авторизации произошла ошибка, пожалуйста, перезагрузите страницу и попробуйте заново";
@@ -94,56 +90,9 @@ export default createStore({
         });
     },
 
-    completeAuth({ state, commit, dispatch }, user: any) {
-      axios
-        .post(state.api + "users/register/", user)
-        .then(function (response) {
-          const logInData = {
-            login: user.username,
-            password: user.password,
-          };
-          dispatch("logIn", logInData);
-        })
-        .catch(function (error) {
-          if (error.response) {
-            for (const property in error.response.data) {
-              state.msg = `${property}: ${error.response.data[property]}`;
-              state.msgTime = Date.now();
-            }
-          } else {
-            state.msg =
-              "При авторизации произошла ошибка, пожалуйста, перезагрузите страницу и попробуйте заново";
-            state.msgTime = Date.now();
-          }
-        });
-    },
-
-    logIn({ state, commit, dispatch }, userData) {
-      axios
-        .post(state.api + "users/login/", userData)
-        .then(function (response) {
-          state.isAuth = true;
-          commit("setToken", response.data.token);
-          dispatch("getProfile");
-          router.push("/qrs");
-        })
-        .catch(function (error) {
-          if (error.response) {
-            for (const property in error.response.data) {
-              state.msg = `${property}: ${error.response.data[property]}`;
-              state.msgTime = Date.now();
-            }
-          } else {
-            state.msg =
-              "При авторизации произошла ошибка, пожалуйста, перезагрузите страницу и попробуйте заново";
-            state.msgTime = Date.now();
-          }
-        });
-    },
-
     logOut({ state }, userData) {
       axios
-        .post(state.api + "users/logout/", userData)
+        .post("api/users/logout/", userData)
         .then(function (response) {
           state.isAuth = false;
           state.token = "";
@@ -153,37 +102,43 @@ export default createStore({
         })
         .catch(function (error) {
           state.msg =
-            "При авторизации произошла ошибка, пожалуйста, перезагрузите страницу и попробуйте заново";
+            "Произошла ошибка, пожалуйста, перезагрузите страницу и попробуйте заново";
           state.msgTime = Date.now();
         });
     },
 
     getProfile({ state }) {
       axios
-        .get(state.api + "users/profile/")
+        .get("api/users/profile/")
         .then(function (response) {
           state.user = {
             username: response.data.username,
             photo_url: response.data.photo_url,
           };
+          router.push("/qrs");
         })
         .catch(function (error) {
-          if (error.response) {
-            for (const property in error.response.data) {
-              state.msg = `${property}: ${error.response.data[property]}`;
-              state.msgTime = Date.now();
-            }
-          } else {
-            state.msg =
-              "При авторизации произошла ошибка, пожалуйста, перезагрузите страницу и попробуйте заново";
-            state.msgTime = Date.now();
-          }
+          // if (error.response) {
+          //   for (const property in error.response.data) {
+          //     state.msg = `${property}: ${error.response.data[property]}`;
+          //     state.msgTime = Date.now();
+          //   }
+          // } else {
+          //   state.msg =
+          //     "При авторизации произошла ошибка, пожалуйста, перезагрузите страницу и попробуйте заново";
+          //   state.msgTime = Date.now();
+          // }
+          state.isAuth = false;
+          state.token = "";
+          axios.defaults.headers.common["Authorization"] = "";
+          localStorage.setItem("token", state.token);
+          router.push("/");
         });
     },
 
     getAllQrs({ state }) {
       axios
-        .get(state.api + "qrs/")
+        .get("api/qrs/")
         .then(function (response) {
           if (response.data.success) {
             state.qrs = response.data.qrs;
@@ -202,7 +157,7 @@ export default createStore({
 
     getQr({ state }, qrId) {
       axios
-        .get(state.api + `qrs/${qrId}/`)
+        .get(`api/qrs/${qrId}/`)
         .then(function (response) {
           if (response.data.success) {
             for (let savedQr of state.qrs) {
@@ -235,7 +190,7 @@ export default createStore({
       qr.edit_time = Date.now();
 
       axios
-        .post(state.api + "qrs/", qr)
+        .post("api/qrs/", qr)
         .then(function (response) {
           if (response.data.success) {
             state.qrs.push(response.data.qr);
@@ -276,7 +231,7 @@ export default createStore({
       }
 
       axios
-        .put(state.api + `qrs/${qr.id}/`, qr)
+        .put(`api/qrs/${qr.id}/`, qr)
         .then(function (response) {
           if (response.data.success) {
             for (let savedQr of state.qrs) {
@@ -303,7 +258,7 @@ export default createStore({
 
     deleteQr({ state }, qrId) {
       axios
-        .delete(state.api + `qrs/${qrId}/`)
+        .delete(`api/qrs/${qrId}/`)
         .then(function (response) {
           if (response.data.success) {
             let i = 0;
@@ -338,7 +293,7 @@ export default createStore({
       }
 
       axios
-        .get(state.api + `qrs/demo/${state.demoQrId}/`)
+        .get(`api/qrs/demo/${state.demoQrId}/`)
         .then(function (response) {
           if (response.data.success) {
             state.demoQrId = response.data.qr.id;
@@ -361,7 +316,7 @@ export default createStore({
       };
 
       axios
-        .post(state.api + "qrs/demo/", data)
+        .post("api/qrs/demo/", data)
         .then(function (response) {
           if (response.data.success) {
             state.demoQrId = response.data.qr.id;
@@ -390,7 +345,7 @@ export default createStore({
       };
 
       axios
-        .put(state.api + `qrs/demo/${state.demoQrId}/`, data)
+        .put(`api/qrs/demo/${state.demoQrId}/`, data)
         .then(function (response) {
           if (response.data.success) {
             state.msg = "Содержимое QR кода обновлено";

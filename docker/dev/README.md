@@ -17,7 +17,7 @@ RECAPTCHA_SECRET_KEY=change_me
 
 TELEGRAM_BOT_TOKEN=change_me
 
-PROD_HOST=qr360.tk
+CURRENT_HOST=http://localhost:8000/
 ```
 
 3. build docker

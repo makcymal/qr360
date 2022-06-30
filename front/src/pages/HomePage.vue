@@ -15,11 +15,6 @@
                 @callback="onAuth"
               />
             </div>
-            <div class="link-wrapper">
-              <h3 class="link sm-font" @click="$router.push('/login')">
-                Уже зарегестрированы?
-              </h3>
-            </div>
           </div>
         </div>
 
@@ -120,7 +115,7 @@ export default defineComponent({
       };
 
       axios
-        .post(store.state.api + "recaptcha/", data)
+        .post("api/recaptcha/", data)
         .then((response) => {
           if (response.data.success) {
             this.showCaptcha = false;
@@ -142,12 +137,6 @@ export default defineComponent({
       this.showCaptcha = true;
       (this.$refs["recaptcha"] as any).reset();
     },
-  },
-
-  mounted() {
-    // if (store.state.demoQrImage == "") {
-    //   store.dispatch("getDemoQr");
-    // }
   },
 });
 </script>
@@ -264,18 +253,5 @@ export default defineComponent({
   user-select: none;
   width: 65%;
   padding-top: 0.5em;
-}
-
-.link-wrapper {
-  margin: auto;
-}
-
-.link {
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.link:hover {
-  text-decoration: underline;
 }
 </style>

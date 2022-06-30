@@ -5,13 +5,10 @@ from django.utils import timezone
 from .managers import QRUserManager
 
 
-def qruser_directory_path(instance, filename):
-    return f'qrusers/{instance.id}/{filename}'
-
-
 class QRUser(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=32, unique=True)
-    telegram_id = models.PositiveBigIntegerField(blank=True, null=True)
+    
+    telegram_username = models.CharField(max_length=32, blank=True, null=True)
     photo_url = models.TextField(max_length=8192, blank=True, null=True)
 
     is_staff = models.BooleanField(default=False)
