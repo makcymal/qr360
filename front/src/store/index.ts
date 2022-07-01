@@ -112,7 +112,7 @@ export default createStore({
         .get("api/users/profile/")
         .then(function (response) {
           state.user = {
-            username: response.data.username,
+            username: response.data.telegram_username,
             photo_url: response.data.photo_url,
           };
           router.push("/qrs");

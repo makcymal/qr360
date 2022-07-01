@@ -11,7 +11,7 @@
             <div class="home-main-auth">
               <auth-button
                 mode="callback"
-                telegram-login="TestForDjangoBot"
+                telegram-login="qr360_bot"
                 @callback="onAuth"
               />
             </div>
