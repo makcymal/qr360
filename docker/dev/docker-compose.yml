@@ -9,10 +9,10 @@ services:
     ports:
       - "8000:8000"
     volumes: 
-      - ../../back/:/home/app/django/back/
+      - ../../:/home/app/django/
     env_file:
       - ./.env
-    command:
+    command: 
       python manage.py runserver 0.0.0.0:8000
 
   vue:
@@ -47,5 +47,3 @@ services:
     depends_on:
       - redis
       - django
-
-  

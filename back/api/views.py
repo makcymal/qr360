@@ -1,158 +1,63 @@
-import collections
-import hmac
-import hashlib
-import string
-import random
+import json
+import sys
 
-from django.views.generic import TemplateView
-from django.views.decorators.cache import never_cache
-from django.http import HttpResponse, HttpResponseRedirect
+from urllib.parse import urlencode
+from urllib.request import Request, build_opener
+
 from django.conf import settings
 
-from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Session, QrCode
-from .serializers import QrSerializer
-from .tasks import update_url
+
+def get_remote_ip():
+    f = sys._getframe()
+    while f:
+        request = f.f_locals.get("request")
+        if request:
+            remote_ip = request.META.get("REMOTE_ADDR", "")
+            forwarded_ip = request.META.get("HTTP_X_FORWARDED_FOR", "")
+            ip = remote_ip if not forwarded_ip else forwarded_ip
+            return ip
+        f = f.f_back
 
 
+def recaptcha_request(params):
+    request_object = Request(
+        url="https://www.google.com/recaptcha/api/siteverify",
+        data=params,
+    )
 
-def check_string(data):
-    secret = hashlib.sha256()
-    secret.update(settings.TGBOT.encode('utf-8'))
-    sorted_params = collections.OrderedDict(sorted(data.items()))
-    param_hash = sorted_params.pop('hash')
-    msg = "\n".join(["{}={}".format(k, v) for k, v in sorted_params.items()])
+    opener = build_opener()
 
-    if param_hash == hmac.new(secret.digest(), msg.encode('utf-8'), digestmod=hashlib.sha256).hexdigest():
-        return True
-    return False
+    return opener.open(request_object)
 
 
-class StartSession(APIView):
-    def post(self, request):
-        try:
-            if check_string(request.data):
-                user_id = request.data['id']
-                old_sessions = Session.objects.filter(user_id=user_id)
-                old_sessions.delete()
-                sess_hash = ''.join(random.choice(string.ascii_lowercase + string.ascii_uppercase + string.digits) for i in range(32))
-                s = Session(user_id=user_id, sess_hash=sess_hash)
-                s.save()
-                return Response({'success': True, 'hash': sess_hash})
-            else:
-                return Response({'success': False})
-        except:
-            return Response({'success': False})
-
-
-class AllQrs(APIView):
-    def get(self, request):
-        try:
-            sess_hash = request.query_params['hash']
-            user_id = Session.objects.get(sess_hash=sess_hash).user_id
-            qrs = QrCode.objects.filter(user_id=user_id)
-            return Response({'success': True, 'qrs': QrSerializer(qrs, many=True).data})
-        except:
-            return Response({'success': False})
-
-
-class ManageQr(APIView):
-    def get(self, request):
-        try:
-            sess_hash = request.query_params['hash']
-            session = Session.objects.get(sess_hash=sess_hash)
-            qr_id = request.query_params['id']
-            qr = QrCode.objects.get(pk=qr_id)
-        except:
-            return Response({'success': False})
-
-        if (qr.user_id != session.user_id):
-            return Response({'success': False})
-
-        return Response({'success': True, 'qr': QrSerializer(qr).data})
-
+class Recaptcha(APIView):
 
     def post(self, request):
         try:
-            sess_hash = request.data['hash']
-            user_id = Session.objects.get(sess_hash=sess_hash).user_id
-            url = request.data['url']
-            edit_time = request.data['edit_time']
-        except:
-            return Response({'success': False})
-
-        qr = QrCode(user_id=user_id, url=url, edit_time=edit_time, entries=0)
-
-        try:
-            name = request.data['name']
-            qr.name = name
+            secret_key = settings.RECAPTCHA_SECRET_KEY
+            recaptcha_response = request.data['recaptchaToken']
+            remote_ip = get_remote_ip()
         except:
             pass
-
-        qr.save()
-        return Response({'success': True, 'qr': QrSerializer(qr).data})
-
-
-    def put(self, request):
-        try:
-            sess_hash = request.data['hash']
-            session = Session.objects.get(sess_hash=sess_hash)
-            qr_id = request.data['id']
-            qr = QrCode.objects.get(pk=qr_id)
-            edit_time = request.data['edit_time']
-        except:
             return Response({'success': False})
 
-        if (qr.user_id != session.user_id):
-            return Response({'success': False})
-
-        qr.edit_time = edit_time
-
-        for field in request.data:
-            if field != 'hash' and field != 'id' and field != 'edit_time' and field != 'timer':
-                try:
-                    setattr(qr, field, request.data[field])
-                except:
-                    pass
+        params = urlencode({
+            "secret": secret_key,
+            "response": recaptcha_response,
+            "remoteip": remote_ip,
+        })
         
-        try:
-            timer = request.data['timer']
-            update_url.apply_async((qr.id, next_url_time), countdown=int(timer))
-        except:
-            pass
+        params = params.encode("utf-8")
 
-        qr.save()
-        return Response({'success': True, 'qr': QrSerializer(qr).data})
+        response = recaptcha_request(params)
+        data = json.loads(response.read().decode("utf-8"))
+        response.close()
 
-
-    def delete(self, request):
-        try:
-            sess_hash = request.data['hash']
-            session = Session.objects.get(sess_hash=sess_hash)
-            qr_id = request.data['id']
-            qr = QrCode.objects.get(pk=qr_id)
-        except:
-            return Response({'success': False})
-
-        if (qr.user_id != session.user_id):
-            return Response({'success': False})
-
-        try:
-            qr.image.delete(save=True)
-            qr.delete()
-            return Response({'success': True})
-        except:
-            return Response({'success': False})
-
-
-def Redirect(request, qr_id):
-    try:
-        qr = QrCode.objects.get(pk=qr_id)
-        qr.entries += 1
-        qr.save()
-        return HttpResponseRedirect('http://' + qr.url)
-    except:
-        return HttpResponse('Sorry, an error occuried')
+        return Response({
+            'success': data.pop('success'),
+            'error-codes': data.pop("error-codes", None),
+            'extra_data': data,
+        })

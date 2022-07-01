@@ -1,16 +1,28 @@
 <template lang="html">
   <div class="qrs-bg"></div>
 
-  <div class="container-fluid qrs-navbar-wrapper">
-    <div class="container-xl">
-      <nav class="navbar">
-        <p class="navbar-brand xs-font qrs-navbar-link" @click="toHome">
-          На главную
+  <header
+    class="navbar navbar-expand-lg bd-navbar sticky-top qrs-navbar-wrapper"
+  >
+    <nav class="container-xxl">
+      <p class="navbar-brand xs-font qrs-navbar-link mb-0" @click="logOut">
+        Выйти
+      </p>
+      <div class="qrs-navbar-nav">
+        <p class="navbar-brand xs-font mb-0">
+          {{ $store.state.user.username }}
         </p>
-        <p class="navbar-brand xs-font">{{ $store.state.user }}</p>
-      </nav>
-    </div>
-  </div>
+        <a class="navbar-brand p-0 me-0 me-lg-2 mb-0">
+          <img
+            :src="$store.state.user.photo_url"
+            width="30"
+            height="30"
+            class="d-block my-1 user-photo"
+          />
+        </a>
+      </div>
+    </nav>
+  </header>
 
   <div class="container-xl">
     <div class="qrs-title-wrapper">
@@ -73,7 +85,7 @@
               :nextUrl="qr.nextUrl"
               :nextUrlTime="qr.nextUrlTime"
               :entries="qr.entries"
-              :getImage="qr.getImage"
+              :getImage="qr.get_image"
             ></qr-card>
           </div>
         </div>
@@ -94,8 +106,8 @@ export default defineComponent({
   components: { QrCard, QrMaker },
 
   methods: {
-    toHome() {
-      store.state.onHome = true;
+    logOut() {
+      store.dispatch("logOut");
     },
   },
 
@@ -135,6 +147,7 @@ body {
 
 .qrs-navbar-link:hover {
   text-decoration: underline;
+  margin: 0;
 }
 
 .qrs-title-wrapper {
@@ -155,5 +168,23 @@ body {
   width: 94%;
   padding: 0 3%;
   margin: 3em 3%;
+}
+
+.qrs-navbar-nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.user-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.user-photo {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
 }
 </style>

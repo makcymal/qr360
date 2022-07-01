@@ -11,7 +11,7 @@
             <div class="home-main-auth">
               <auth-button
                 mode="callback"
-                telegram-login="QR360_bot"
+                telegram-login="qr360_bot"
                 @callback="onAuth"
               />
             </div>
@@ -36,7 +36,7 @@
                 которая перенаправит пользователя туда, куда укажете Вы!
               </p>
             </div>
-            <div class="home-demo-qr-wrapper">
+            <div v-if="!showCaptcha" class="home-demo-qr-wrapper">
               <div class="home-demo-input-wrapper">
                 <easy-input
                   v-model="demoQrUrl"
@@ -56,7 +56,18 @@
                 >
               </div>
             </div>
-            <img :src="$store.state.demoQrImage" class="home-demo-qr" />
+            <img
+              v-if="!showCaptcha"
+              :src="$store.state.demoQrImage"
+              class="home-demo-qr"
+            />
+            <vue-recaptcha
+              v-if="showCaptcha"
+              :sitekey="sitekey"
+              ref="recaptcha"
+              @verify="verify"
+              @expired="onCaptchaExpired"
+            ></vue-recaptcha>
           </div>
         </div>
       </div>
@@ -66,29 +77,65 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { VueRecaptcha } from "vue-recaptcha";
 import store from "@/store";
 import AuthButton from "@/components/AuthButton.vue";
+import axios from "axios";
 
 export default defineComponent({
   name: "home-page",
 
-  components: { AuthButton },
+  components: {
+    AuthButton,
+    VueRecaptcha,
+  },
 
   data() {
     return {
+      sitekey: "6Ldh7nggAAAAAMOB1xz6r4LSsDGKWRW2m7Chc2xg",
+      showCaptcha: true,
       explanationVisible: false,
       demoQrUrl: "",
     };
   },
 
   methods: {
-    onAuth(user: any) {
+    onAuth(user) {
       store.dispatch("onAuth", user);
     },
 
     updateDemoQr() {
       store.dispatch("updateDemoQr", this.demoQrUrl);
       this.demoQrUrl = "";
+    },
+
+    verify(recaptchaToken: string) {
+      const data = {
+        recaptchaToken: recaptchaToken,
+      };
+
+      axios
+        .post("api/recaptcha/", data)
+        .then((response) => {
+          if (response.data.success) {
+            this.showCaptcha = false;
+            store.dispatch("getDemoQr");
+          } else {
+            store.state.msg =
+              "Произошла ошибка, пожалуйста, перезагрузите страницу и попробуйте заново";
+            store.state.msgTime = Date.now();
+          }
+        })
+        .catch(function (error) {
+          store.state.msg =
+            "Произошла ошибка, пожалуйста, перезагрузите страницу и попробуйте заново";
+          store.state.msgTime = Date.now();
+        });
+    },
+
+    onCaptchaExpired() {
+      this.showCaptcha = true;
+      (this.$refs["recaptcha"] as any).reset();
     },
   },
 });
@@ -131,7 +178,7 @@ export default defineComponent({
 }
 
 .home-main-auth {
-  margin: auto;
+  margin: 20px auto;
   user-select: none;
 }
 

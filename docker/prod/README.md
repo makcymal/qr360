@@ -13,6 +13,7 @@ yarn build
 DEBUG=0
 SECRET_KEY=change_me
 DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
+
 SQL_ENGINE=django.db.backends.postgresql
 SQL_DATABASE=postgresql
 SQL_USER=user
@@ -27,8 +28,13 @@ POSTGRES_DB=postgresql
 
 CELERY_BROKER=redis://redis:6379
 CELERY_BACKEND=redis://redis:6379
-TGBOT=<bot_token>
 
+RECAPTCHA_SITE_KEY=change_me
+RECAPTCHA_SECRET_KEY=change_me
+
+TELEGRAM_BOT_TOKEN=change_me
+
+CURRENT_HOST=https://qr360.tk/
 ```
 
 4. build docker
@@ -40,3 +46,6 @@ docker-compose build
 ```
 docker-compose up
 ```
+
+captcha: change site_key in front/src/pages/HomePage.vue
+tgbot: change bot in front/src/pages/HomePage.vue

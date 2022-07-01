@@ -12,6 +12,9 @@
     <div v-if="iconName == 'trash'" class="icon-icon-wrapper">
       <img src="@/assets/icons/trash.svg" class="icon-icon" />
     </div>
+    <div v-if="iconName == 'setted_name'" class="icon-icon-wrapper">
+      <img src="@/assets/icons/setted_name.svg" class="icon-icon" />
+    </div>
   </div>
 </template>
 

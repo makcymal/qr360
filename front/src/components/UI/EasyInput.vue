@@ -8,7 +8,7 @@
 
     <div class="input-input-wrapper">
       <input
-        type="text"
+        :type="type"
         spellcheck="false"
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
@@ -35,6 +35,10 @@ export default defineComponent({
     placeholder: {
       type: String,
       default: "",
+    },
+    type: {
+      type: String,
+      default: "text",
     },
   },
 });

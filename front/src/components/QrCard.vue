@@ -125,13 +125,15 @@ export default defineComponent({
 
   methods: {
     updateQr() {
-      store.dispatch("updateQr", {
+      const qr = {
         id: this.id,
-        name: this.name.trim(),
-        url: this.url.trim(),
+        name: this.inputName.trim(),
+        url: this.inputUrl,
         next_url: this.nextUrl.trim(),
         next_url_time: this.nextUrlTime.trim(),
-      });
+      };
+
+      store.dispatch("updateQr", qr);
     },
 
     deleteQr() {

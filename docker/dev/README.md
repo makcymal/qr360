@@ -6,11 +6,18 @@
 2. create .env file, example:
 ```
 DEBUG=1
-SECRET_KEY=django-insecure-v%n%urhg#$3i9ofm-6-6_dgy@r=sk^dnz2fft(=$nc0x+-usl1
+SECRET_KEY=dev
 DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 0.0.0.0 [::1]
+
 CELERY_BROKER=redis://redis:6379
 CELERY_BACKEND=redis://redis:6379
-TGBOT=<bot_token>
+
+RECAPTCHA_SITE_KEY=change_me
+RECAPTCHA_SECRET_KEY=change_me
+
+TELEGRAM_BOT_TOKEN=change_me
+
+CURRENT_HOST=http://localhost:8000/
 ```
 
 3. build docker
@@ -22,3 +29,6 @@ docker-compose build
 ```
 docker-compose up
 ```
+
+captcha: change site_key in front/src/pages/HomePage.vue
+tgbot: change bot in front/src/pages/HomePage.vue
